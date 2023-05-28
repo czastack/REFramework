@@ -32,6 +32,16 @@ endif()
 
 [options]
 DEVELOPER_MODE = { value = true, comment = "Enable developer mode" }
+REF_BUILD_RE2 = false
+REF_BUILD_RE2_TDB66 = false
+REF_BUILD_RE3 = false
+REF_BUILD_RE3_TDB67 = false
+REF_BUILD_RE4 = false
+REF_BUILD_RE7 = false
+REF_BUILD_RE7_TDB49 = false
+REF_BUILD_RE8 = false
+REF_BUILD_DMC5 = false
+REF_BUILD_MHRISE = false
 REF_BUILD_RE2_SDK = false
 REF_BUILD_RE2_TDB66SDK = false
 REF_BUILD_RE3_SDK = false
@@ -42,22 +52,36 @@ REF_BUILD_RE7_TDB49SDK = false
 REF_BUILD_RE8_SDK = false
 REF_BUILD_DMC5_SDK = false
 REF_BUILD_MHRISE_SDK = false
+REF_BUILD_EXAMPLE_PLUGIN = false
+REF_BUILD_WEAPON_STAY_BIG_PLUGIN = false
 REF_BUILD_FRAMEWORK = { value = true, comment = "Enable building the full REFramework" }
 REF_BUILD_DEPENDENCIES = { value = true, comment = "Enable building dependencies" }
 
 [conditions]
 developer-mode = "DEVELOPER_MODE"
 build-framework = "REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8"
-build-re2-sdk = "REF_BUILD_RE2_SDK OR REF_BUILD_FRAMEWORK"
-build-re2tdb66-sdk = "REF_BUILD_RE2_TDB66SDK OR REF_BUILD_FRAMEWORK"
-build-re3-sdk = "REF_BUILD_RE3_SDK OR REF_BUILD_FRAMEWORK"
-build-re3tdb67-sdk = "REF_BUILD_RE3_TDB67SDK OR REF_BUILD_FRAMEWORK"
-build-re4-sdk = "REF_BUILD_RE4_SDK OR REF_BUILD_FRAMEWORK"
-build-re7-sdk = "REF_BUILD_RE7_SDK OR REF_BUILD_FRAMEWORK"
-build-re7tdb49-sdk = "REF_BUILD_RE7_TDB49SDK OR REF_BUILD_FRAMEWORK"
-build-re8-sdk = "REF_BUILD_RE8_SDK OR REF_BUILD_FRAMEWORK"
-build-dmc5-sdk = "REF_BUILD_DMC5_SDK OR REF_BUILD_FRAMEWORK"
-build-mhrise-sdk = "REF_BUILD_MHRISE_SDK OR REF_BUILD_FRAMEWORK"
+build-re2-sdk = "REF_BUILD_RE2_SDK AND REF_BUILD_FRAMEWORK"
+build-re2 = "REF_BUILD_RE2"
+build-re2tdb66-sdk = "REF_BUILD_RE2_TDB66SDK AND REF_BUILD_FRAMEWORK"
+build-re2tdb66 = "REF_BUILD_RE2_TDB66"
+build-re3-sdk = "REF_BUILD_RE3_SDK AND REF_BUILD_FRAMEWORK"
+build-re3 = "REF_BUILD_RE3"
+build-re3tdb67-sdk = "REF_BUILD_RE3_TDB67SDK AND REF_BUILD_FRAMEWORK"
+build-re3tdb67 = "REF_BUILD_RE3_TDB67"
+build-re4-sdk = "REF_BUILD_RE4_SDK AND REF_BUILD_FRAMEWORK"
+build-re4 = "REF_BUILD_RE4"
+build-re7-sdk = "REF_BUILD_RE7_SDK AND REF_BUILD_FRAMEWORK"
+build-re7 = "REF_BUILD_RE7"
+build-re7tdb49-sdk = "REF_BUILD_RE7_TDB49SDK AND REF_BUILD_FRAMEWORK"
+build-re7tdb49 = "REF_BUILD_RE7_TDB49"
+build-re8-sdk = "REF_BUILD_RE8_SDK AND REF_BUILD_FRAMEWORK"
+build-re8 = "REF_BUILD_RE8"
+build-dmc5-sdk = "REF_BUILD_DMC5_SDK AND REF_BUILD_FRAMEWORK"
+build-dmc5 = "REF_BUILD_DMC5"
+build-mhrise-sdk = "REF_BUILD_MHRISE_SDK AND REF_BUILD_FRAMEWORK"
+build-mhrise = "REF_BUILD_MHRISE"
+build-example-plugin = "REF_BUILD_EXAMPLE_PLUGIN"
+build-weapon-stay-big-plugin = "REF_BUILD_WEAPON_STAY_BIG_PLUGIN"
 build-framework-dependencies = "REF_BUILD_DEPENDENCIES AND CMAKE_SIZEOF_VOID_P EQUAL 8"
 
 [fetch-content.asmjit]
@@ -250,9 +274,11 @@ condition = "build-re2tdb66-sdk"
 
 [target.RE2]
 type = "game"
+condition = "build-re2"
 
 [target.RE2_TDB66]
 type = "game"
+condition = "build-re2tdb66"
 
 [target.RE3SDK]
 type = "sdk"
@@ -266,12 +292,15 @@ condition = "build-re3tdb67-sdk"
 
 [target.RE3]
 type = "game"
+condition = "build-re3"
 
 [target.RE3_TDB67]
 type = "game"
+condition = "build-re3tdb67"
 
 [target.RE4]
 type = "game"
+condition = "build-re4"
 
 [target.RE4SDK]
 type = "sdk"
@@ -290,9 +319,11 @@ condition = "build-re7tdb49-sdk"
 
 [target.RE7]
 type = "game"
+condition = "build-re7"
 
 [target.RE7_TDB49]
 type = "game"
+condition = "build-re7tdb49"
 
 [target.RE8SDK]
 type = "sdk"
@@ -301,6 +332,7 @@ condition = "build-re8-sdk"
 
 [target.RE8]
 type = "game"
+condition = "build-re8"
 
 [target.DMC5SDK]
 type = "sdk"
@@ -309,6 +341,7 @@ condition = "build-dmc5-sdk"
 
 [target.DMC5]
 type = "game"
+condition = "build-dmc5"
 
 [target.MHRISESDK]
 type = "sdk"
@@ -317,6 +350,7 @@ condition = "build-mhrise-sdk"
 
 [target.MHRISE]
 type = "game"
+condition = "build-mhrise"
 
 [template.plugin]
 type = "shared"
@@ -334,6 +368,7 @@ ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO = "${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET
 
 [target.example_plugin]
 type = "plugin"
+condition = "build-example-plugin"
 sources = ["examples/example_plugin/**.cpp", "examples/example_plugin/**.c"]
 headers = ["examples/example_plugin/**.hpp", "examples/example_plugin/**.h"]
 link-libraries = [
@@ -344,4 +379,5 @@ link-libraries = [
 
 [target.weapon_stay_big_plugin]
 type = "plugin"
+condition = "build-weapon-stay-big-plugin"
 sources = ["examples/weapon_stay_big_plugin/weapon_stay_big.cpp"]

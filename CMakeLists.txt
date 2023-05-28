@@ -29,6 +29,16 @@ endif()
 
 # Options
 option(DEVELOPER_MODE "Enable developer mode" ON)
+option(REF_BUILD_RE2 OFF)
+option(REF_BUILD_RE2_TDB66 OFF)
+option(REF_BUILD_RE3 OFF)
+option(REF_BUILD_RE3_TDB67 OFF)
+option(REF_BUILD_RE4 OFF)
+option(REF_BUILD_RE7 OFF)
+option(REF_BUILD_RE7_TDB49 OFF)
+option(REF_BUILD_RE8 OFF)
+option(REF_BUILD_DMC5 OFF)
+option(REF_BUILD_MHRISE OFF)
 option(REF_BUILD_RE2_SDK OFF)
 option(REF_BUILD_RE2_TDB66SDK OFF)
 option(REF_BUILD_RE3_SDK OFF)
@@ -39,6 +49,8 @@ option(REF_BUILD_RE7_TDB49SDK OFF)
 option(REF_BUILD_RE8_SDK OFF)
 option(REF_BUILD_DMC5_SDK OFF)
 option(REF_BUILD_MHRISE_SDK OFF)
+option(REF_BUILD_EXAMPLE_PLUGIN OFF)
+option(REF_BUILD_WEAPON_STAY_BIG_PLUGIN OFF)
 option(REF_BUILD_FRAMEWORK "Enable building the full REFramework" ON)
 option(REF_BUILD_DEPENDENCIES "Enable building dependencies" ON)
 
@@ -524,7 +536,7 @@ unset(CMKR_TARGET)
 unset(CMKR_SOURCES)
 
 # Target RE2SDK
-if(REF_BUILD_RE2_SDK OR REF_BUILD_FRAMEWORK) # build-re2-sdk
+if(REF_BUILD_RE2_SDK AND REF_BUILD_FRAMEWORK) # build-re2-sdk
 	set(CMKR_TARGET RE2SDK)
 	set(RE2SDK_SOURCES "")
 
@@ -1133,7 +1145,7 @@ if(REF_BUILD_RE2_SDK OR REF_BUILD_FRAMEWORK) # build-re2-sdk
 endif()
 
 # Target RE2_TDB66SDK
-if(REF_BUILD_RE2_TDB66SDK OR REF_BUILD_FRAMEWORK) # build-re2tdb66-sdk
+if(REF_BUILD_RE2_TDB66SDK AND REF_BUILD_FRAMEWORK) # build-re2tdb66-sdk
 	set(CMKR_TARGET RE2_TDB66SDK)
 	set(RE2_TDB66SDK_SOURCES "")
 
@@ -1744,394 +1756,398 @@ endif()
 
 # Target RE2
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET RE2)
-	set(RE2_SOURCES "")
+	if(REF_BUILD_RE2) # build-re2
+		set(CMKR_TARGET RE2)
+		set(RE2_SOURCES "")
 
-	list(APPEND RE2_SOURCES
-		"src/D3D11Hook.cpp"
-		"src/D3D12Hook.cpp"
-		"src/DInputHook.cpp"
-		"src/ExceptionHandler.cpp"
-		"src/HookManager.cpp"
-		"src/Main.cpp"
-		"src/Mods.cpp"
-		"src/REFramework.cpp"
-		"src/WindowsMessageHook.cpp"
-		"src/mods/APIProxy.cpp"
-		"src/mods/Camera.cpp"
-		"src/mods/DeveloperTools.cpp"
-		"src/mods/FirstPerson.cpp"
-		"src/mods/FreeCam.cpp"
-		"src/mods/Graphics.cpp"
-		"src/mods/Hooks.cpp"
-		"src/mods/IntegrityCheckBypass.cpp"
-		"src/mods/ManualFlashlight.cpp"
-		"src/mods/PluginLoader.cpp"
-		"src/mods/REFrameworkConfig.cpp"
-		"src/mods/Scene.cpp"
-		"src/mods/ScriptRunner.cpp"
-		"src/mods/VR.cpp"
-		"src/mods/bindings/FS.cpp"
-		"src/mods/bindings/ImGui.cpp"
-		"src/mods/bindings/Json.cpp"
-		"src/mods/bindings/Sdk.cpp"
-		"src/mods/tools/ChainViewer.cpp"
-		"src/mods/tools/GameObjectsDisplay.cpp"
-		"src/mods/tools/ObjectExplorer.cpp"
-		"src/mods/vr/Bindings.cpp"
-		"src/mods/vr/D3D11Component.cpp"
-		"src/mods/vr/D3D12Component.cpp"
-		"src/mods/vr/OverlayComponent.cpp"
-		"src/mods/vr/d3d12/ResourceCopier.cpp"
-		"src/mods/vr/d3d12/TextureContext.cpp"
-		"src/mods/vr/games/RE8VR.cpp"
-		"src/mods/vr/runtimes/OpenVR.cpp"
-		"src/mods/vr/runtimes/OpenXR.cpp"
-		"src/re2-imgui/imgui_impl_dx11.cpp"
-		"src/re2-imgui/imgui_impl_dx12.cpp"
-		"src/re2-imgui/imgui_impl_win32.cpp"
-		"src/utility/ImGui.cpp"
-		"src/D3D11Hook.hpp"
-		"src/D3D12Hook.hpp"
-		"src/DInputHook.hpp"
-		"src/ExceptionHandler.hpp"
-		"src/Genny.hpp"
-		"src/GennyIda.hpp"
-		"src/HookManager.hpp"
-		"src/LicenseStrings.hpp"
-		"src/Mod.hpp"
-		"src/Mods.hpp"
-		"src/REFramework.hpp"
-		"src/Tool.hpp"
-		"src/WindowFilter.hpp"
-		"src/WindowsMessageHook.hpp"
-		"src/mods/APIProxy.hpp"
-		"src/mods/Camera.hpp"
-		"src/mods/DeveloperTools.hpp"
-		"src/mods/FirstPerson.hpp"
-		"src/mods/FreeCam.hpp"
-		"src/mods/Graphics.hpp"
-		"src/mods/Hooks.hpp"
-		"src/mods/IntegrityCheckBypass.hpp"
-		"src/mods/ManualFlashlight.hpp"
-		"src/mods/PluginLoader.hpp"
-		"src/mods/REFrameworkConfig.hpp"
-		"src/mods/Scene.hpp"
-		"src/mods/ScriptRunner.hpp"
-		"src/mods/VR.hpp"
-		"src/mods/bindings/FS.hpp"
-		"src/mods/bindings/ImGui.hpp"
-		"src/mods/bindings/Json.hpp"
-		"src/mods/bindings/Sdk.hpp"
-		"src/mods/tools/ChainViewer.hpp"
-		"src/mods/tools/GameObjectsDisplay.hpp"
-		"src/mods/tools/ObjectExplorer.hpp"
-		"src/mods/vr/D3D11Component.hpp"
-		"src/mods/vr/D3D12Component.hpp"
-		"src/mods/vr/OverlayComponent.hpp"
-		"src/mods/vr/d3d12/ComPtr.hpp"
-		"src/mods/vr/d3d12/ResourceCopier.hpp"
-		"src/mods/vr/d3d12/TextureContext.hpp"
-		"src/mods/vr/games/RE8VR.hpp"
-		"src/mods/vr/runtimes/OpenVR.hpp"
-		"src/mods/vr/runtimes/OpenXR.hpp"
-		"src/mods/vr/runtimes/VRRuntime.hpp"
-		"src/re2-imgui/af_baidu.hpp"
-		"src/re2-imgui/af_faprolight.hpp"
-		"src/re2-imgui/font_robotomedium.hpp"
-		"src/re2-imgui/re2_imconfig.hpp"
-		"src/utility/ImGui.hpp"
-		"src/re2-imgui/af_fadef.h"
-		"src/re2-imgui/imgui_impl_dx11.h"
-		"src/re2-imgui/imgui_impl_dx12.h"
-		"src/re2-imgui/imgui_impl_win32.h"
-	)
-
-	list(APPEND RE2_SOURCES
-		cmake.toml
-	)
-
-	set(CMKR_SOURCES ${RE2_SOURCES})
-	add_library(RE2 SHARED)
-
-	if(RE2_SOURCES)
-		target_sources(RE2 PRIVATE ${RE2_SOURCES})
-	endif()
-
-	target_compile_definitions(RE2 PUBLIC
-		${CMKR_TARGET}
-		REFRAMEWORK_EXPORTS
-		"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
-	)
-
-	if(DEVELOPER_MODE) # developer-mode
-		target_compile_definitions(RE2 PUBLIC
-			DEVELOPER
+		list(APPEND RE2_SOURCES
+			"src/D3D11Hook.cpp"
+			"src/D3D12Hook.cpp"
+			"src/DInputHook.cpp"
+			"src/ExceptionHandler.cpp"
+			"src/HookManager.cpp"
+			"src/Main.cpp"
+			"src/Mods.cpp"
+			"src/REFramework.cpp"
+			"src/WindowsMessageHook.cpp"
+			"src/mods/APIProxy.cpp"
+			"src/mods/Camera.cpp"
+			"src/mods/DeveloperTools.cpp"
+			"src/mods/FirstPerson.cpp"
+			"src/mods/FreeCam.cpp"
+			"src/mods/Graphics.cpp"
+			"src/mods/Hooks.cpp"
+			"src/mods/IntegrityCheckBypass.cpp"
+			"src/mods/ManualFlashlight.cpp"
+			"src/mods/PluginLoader.cpp"
+			"src/mods/REFrameworkConfig.cpp"
+			"src/mods/Scene.cpp"
+			"src/mods/ScriptRunner.cpp"
+			"src/mods/VR.cpp"
+			"src/mods/bindings/FS.cpp"
+			"src/mods/bindings/ImGui.cpp"
+			"src/mods/bindings/Json.cpp"
+			"src/mods/bindings/Sdk.cpp"
+			"src/mods/tools/ChainViewer.cpp"
+			"src/mods/tools/GameObjectsDisplay.cpp"
+			"src/mods/tools/ObjectExplorer.cpp"
+			"src/mods/vr/Bindings.cpp"
+			"src/mods/vr/D3D11Component.cpp"
+			"src/mods/vr/D3D12Component.cpp"
+			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/ResourceCopier.cpp"
+			"src/mods/vr/d3d12/TextureContext.cpp"
+			"src/mods/vr/games/RE8VR.cpp"
+			"src/mods/vr/runtimes/OpenVR.cpp"
+			"src/mods/vr/runtimes/OpenXR.cpp"
+			"src/re2-imgui/imgui_impl_dx11.cpp"
+			"src/re2-imgui/imgui_impl_dx12.cpp"
+			"src/re2-imgui/imgui_impl_win32.cpp"
+			"src/utility/ImGui.cpp"
+			"src/D3D11Hook.hpp"
+			"src/D3D12Hook.hpp"
+			"src/DInputHook.hpp"
+			"src/ExceptionHandler.hpp"
+			"src/Genny.hpp"
+			"src/GennyIda.hpp"
+			"src/HookManager.hpp"
+			"src/LicenseStrings.hpp"
+			"src/Mod.hpp"
+			"src/Mods.hpp"
+			"src/REFramework.hpp"
+			"src/Tool.hpp"
+			"src/WindowFilter.hpp"
+			"src/WindowsMessageHook.hpp"
+			"src/mods/APIProxy.hpp"
+			"src/mods/Camera.hpp"
+			"src/mods/DeveloperTools.hpp"
+			"src/mods/FirstPerson.hpp"
+			"src/mods/FreeCam.hpp"
+			"src/mods/Graphics.hpp"
+			"src/mods/Hooks.hpp"
+			"src/mods/IntegrityCheckBypass.hpp"
+			"src/mods/ManualFlashlight.hpp"
+			"src/mods/PluginLoader.hpp"
+			"src/mods/REFrameworkConfig.hpp"
+			"src/mods/Scene.hpp"
+			"src/mods/ScriptRunner.hpp"
+			"src/mods/VR.hpp"
+			"src/mods/bindings/FS.hpp"
+			"src/mods/bindings/ImGui.hpp"
+			"src/mods/bindings/Json.hpp"
+			"src/mods/bindings/Sdk.hpp"
+			"src/mods/tools/ChainViewer.hpp"
+			"src/mods/tools/GameObjectsDisplay.hpp"
+			"src/mods/tools/ObjectExplorer.hpp"
+			"src/mods/vr/D3D11Component.hpp"
+			"src/mods/vr/D3D12Component.hpp"
+			"src/mods/vr/OverlayComponent.hpp"
+			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/ResourceCopier.hpp"
+			"src/mods/vr/d3d12/TextureContext.hpp"
+			"src/mods/vr/games/RE8VR.hpp"
+			"src/mods/vr/runtimes/OpenVR.hpp"
+			"src/mods/vr/runtimes/OpenXR.hpp"
+			"src/mods/vr/runtimes/VRRuntime.hpp"
+			"src/re2-imgui/af_baidu.hpp"
+			"src/re2-imgui/af_faprolight.hpp"
+			"src/re2-imgui/font_robotomedium.hpp"
+			"src/re2-imgui/re2_imconfig.hpp"
+			"src/utility/ImGui.hpp"
+			"src/re2-imgui/af_fadef.h"
+			"src/re2-imgui/imgui_impl_dx11.h"
+			"src/re2-imgui/imgui_impl_dx12.h"
+			"src/re2-imgui/imgui_impl_win32.h"
 		)
+
+		list(APPEND RE2_SOURCES
+			cmake.toml
+		)
+
+		set(CMKR_SOURCES ${RE2_SOURCES})
+		add_library(RE2 SHARED)
+
+		if(RE2_SOURCES)
+			target_sources(RE2 PRIVATE ${RE2_SOURCES})
+		endif()
+
+		target_compile_definitions(RE2 PUBLIC
+			${CMKR_TARGET}
+			REFRAMEWORK_EXPORTS
+			"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
+		)
+
+		if(DEVELOPER_MODE) # developer-mode
+			target_compile_definitions(RE2 PUBLIC
+				DEVELOPER
+			)
+		endif()
+
+		target_compile_features(RE2 PUBLIC
+			cxx_std_20
+		)
+
+		target_compile_options(RE2 PUBLIC
+			"/GS-"
+			"/bigobj"
+			"/EHa"
+		)
+
+		target_include_directories(RE2 PUBLIC
+			"shared/"
+			"src/"
+			"include/"
+			"${OPENXR_SOURCE_DIR}/src"
+		)
+
+		target_link_directories(RE2 PUBLIC
+			"dependencies/openvr/lib/win64/"
+		)
+
+		target_link_libraries(RE2 PUBLIC
+			${CMKR_TARGET}SDK
+			utility
+			asmjit::asmjit
+			nlohmann_json
+			spdlog
+			lua
+			sol2
+			imgui
+			imguizmo
+			imnodes
+			minhook
+			d3d11
+			glm_static
+			shlwapi
+			openvr
+			openxr_loader
+			delayimp
+			DirectXTK
+			DirectXTK12
+		)
+
+		set_target_properties(RE2 PROPERTIES
+			OUTPUT_NAME
+				dinput8
+			LINK_FLAGS
+				"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	target_compile_features(RE2 PUBLIC
-		cxx_std_20
-	)
-
-	target_compile_options(RE2 PUBLIC
-		"/GS-"
-		"/bigobj"
-		"/EHa"
-	)
-
-	target_include_directories(RE2 PUBLIC
-		"shared/"
-		"src/"
-		"include/"
-		"${OPENXR_SOURCE_DIR}/src"
-	)
-
-	target_link_directories(RE2 PUBLIC
-		"dependencies/openvr/lib/win64/"
-	)
-
-	target_link_libraries(RE2 PUBLIC
-		${CMKR_TARGET}SDK
-		utility
-		asmjit::asmjit
-		nlohmann_json
-		spdlog
-		lua
-		sol2
-		imgui
-		imguizmo
-		imnodes
-		minhook
-		d3d11
-		glm_static
-		shlwapi
-		openvr
-		openxr_loader
-		delayimp
-		DirectXTK
-		DirectXTK12
-	)
-
-	set_target_properties(RE2 PROPERTIES
-		OUTPUT_NAME
-			dinput8
-		LINK_FLAGS
-			"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target RE2_TDB66
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET RE2_TDB66)
-	set(RE2_TDB66_SOURCES "")
+	if(REF_BUILD_RE2_TDB66) # build-re2tdb66
+		set(CMKR_TARGET RE2_TDB66)
+		set(RE2_TDB66_SOURCES "")
 
-	list(APPEND RE2_TDB66_SOURCES
-		"src/D3D11Hook.cpp"
-		"src/D3D12Hook.cpp"
-		"src/DInputHook.cpp"
-		"src/ExceptionHandler.cpp"
-		"src/HookManager.cpp"
-		"src/Main.cpp"
-		"src/Mods.cpp"
-		"src/REFramework.cpp"
-		"src/WindowsMessageHook.cpp"
-		"src/mods/APIProxy.cpp"
-		"src/mods/Camera.cpp"
-		"src/mods/DeveloperTools.cpp"
-		"src/mods/FirstPerson.cpp"
-		"src/mods/FreeCam.cpp"
-		"src/mods/Graphics.cpp"
-		"src/mods/Hooks.cpp"
-		"src/mods/IntegrityCheckBypass.cpp"
-		"src/mods/ManualFlashlight.cpp"
-		"src/mods/PluginLoader.cpp"
-		"src/mods/REFrameworkConfig.cpp"
-		"src/mods/Scene.cpp"
-		"src/mods/ScriptRunner.cpp"
-		"src/mods/VR.cpp"
-		"src/mods/bindings/FS.cpp"
-		"src/mods/bindings/ImGui.cpp"
-		"src/mods/bindings/Json.cpp"
-		"src/mods/bindings/Sdk.cpp"
-		"src/mods/tools/ChainViewer.cpp"
-		"src/mods/tools/GameObjectsDisplay.cpp"
-		"src/mods/tools/ObjectExplorer.cpp"
-		"src/mods/vr/Bindings.cpp"
-		"src/mods/vr/D3D11Component.cpp"
-		"src/mods/vr/D3D12Component.cpp"
-		"src/mods/vr/OverlayComponent.cpp"
-		"src/mods/vr/d3d12/ResourceCopier.cpp"
-		"src/mods/vr/d3d12/TextureContext.cpp"
-		"src/mods/vr/games/RE8VR.cpp"
-		"src/mods/vr/runtimes/OpenVR.cpp"
-		"src/mods/vr/runtimes/OpenXR.cpp"
-		"src/re2-imgui/imgui_impl_dx11.cpp"
-		"src/re2-imgui/imgui_impl_dx12.cpp"
-		"src/re2-imgui/imgui_impl_win32.cpp"
-		"src/utility/ImGui.cpp"
-		"src/D3D11Hook.hpp"
-		"src/D3D12Hook.hpp"
-		"src/DInputHook.hpp"
-		"src/ExceptionHandler.hpp"
-		"src/Genny.hpp"
-		"src/GennyIda.hpp"
-		"src/HookManager.hpp"
-		"src/LicenseStrings.hpp"
-		"src/Mod.hpp"
-		"src/Mods.hpp"
-		"src/REFramework.hpp"
-		"src/Tool.hpp"
-		"src/WindowFilter.hpp"
-		"src/WindowsMessageHook.hpp"
-		"src/mods/APIProxy.hpp"
-		"src/mods/Camera.hpp"
-		"src/mods/DeveloperTools.hpp"
-		"src/mods/FirstPerson.hpp"
-		"src/mods/FreeCam.hpp"
-		"src/mods/Graphics.hpp"
-		"src/mods/Hooks.hpp"
-		"src/mods/IntegrityCheckBypass.hpp"
-		"src/mods/ManualFlashlight.hpp"
-		"src/mods/PluginLoader.hpp"
-		"src/mods/REFrameworkConfig.hpp"
-		"src/mods/Scene.hpp"
-		"src/mods/ScriptRunner.hpp"
-		"src/mods/VR.hpp"
-		"src/mods/bindings/FS.hpp"
-		"src/mods/bindings/ImGui.hpp"
-		"src/mods/bindings/Json.hpp"
-		"src/mods/bindings/Sdk.hpp"
-		"src/mods/tools/ChainViewer.hpp"
-		"src/mods/tools/GameObjectsDisplay.hpp"
-		"src/mods/tools/ObjectExplorer.hpp"
-		"src/mods/vr/D3D11Component.hpp"
-		"src/mods/vr/D3D12Component.hpp"
-		"src/mods/vr/OverlayComponent.hpp"
-		"src/mods/vr/d3d12/ComPtr.hpp"
-		"src/mods/vr/d3d12/ResourceCopier.hpp"
-		"src/mods/vr/d3d12/TextureContext.hpp"
-		"src/mods/vr/games/RE8VR.hpp"
-		"src/mods/vr/runtimes/OpenVR.hpp"
-		"src/mods/vr/runtimes/OpenXR.hpp"
-		"src/mods/vr/runtimes/VRRuntime.hpp"
-		"src/re2-imgui/af_baidu.hpp"
-		"src/re2-imgui/af_faprolight.hpp"
-		"src/re2-imgui/font_robotomedium.hpp"
-		"src/re2-imgui/re2_imconfig.hpp"
-		"src/utility/ImGui.hpp"
-		"src/re2-imgui/af_fadef.h"
-		"src/re2-imgui/imgui_impl_dx11.h"
-		"src/re2-imgui/imgui_impl_dx12.h"
-		"src/re2-imgui/imgui_impl_win32.h"
-	)
-
-	list(APPEND RE2_TDB66_SOURCES
-		cmake.toml
-	)
-
-	set(CMKR_SOURCES ${RE2_TDB66_SOURCES})
-	add_library(RE2_TDB66 SHARED)
-
-	if(RE2_TDB66_SOURCES)
-		target_sources(RE2_TDB66 PRIVATE ${RE2_TDB66_SOURCES})
-	endif()
-
-	target_compile_definitions(RE2_TDB66 PUBLIC
-		${CMKR_TARGET}
-		REFRAMEWORK_EXPORTS
-		"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
-	)
-
-	if(DEVELOPER_MODE) # developer-mode
-		target_compile_definitions(RE2_TDB66 PUBLIC
-			DEVELOPER
+		list(APPEND RE2_TDB66_SOURCES
+			"src/D3D11Hook.cpp"
+			"src/D3D12Hook.cpp"
+			"src/DInputHook.cpp"
+			"src/ExceptionHandler.cpp"
+			"src/HookManager.cpp"
+			"src/Main.cpp"
+			"src/Mods.cpp"
+			"src/REFramework.cpp"
+			"src/WindowsMessageHook.cpp"
+			"src/mods/APIProxy.cpp"
+			"src/mods/Camera.cpp"
+			"src/mods/DeveloperTools.cpp"
+			"src/mods/FirstPerson.cpp"
+			"src/mods/FreeCam.cpp"
+			"src/mods/Graphics.cpp"
+			"src/mods/Hooks.cpp"
+			"src/mods/IntegrityCheckBypass.cpp"
+			"src/mods/ManualFlashlight.cpp"
+			"src/mods/PluginLoader.cpp"
+			"src/mods/REFrameworkConfig.cpp"
+			"src/mods/Scene.cpp"
+			"src/mods/ScriptRunner.cpp"
+			"src/mods/VR.cpp"
+			"src/mods/bindings/FS.cpp"
+			"src/mods/bindings/ImGui.cpp"
+			"src/mods/bindings/Json.cpp"
+			"src/mods/bindings/Sdk.cpp"
+			"src/mods/tools/ChainViewer.cpp"
+			"src/mods/tools/GameObjectsDisplay.cpp"
+			"src/mods/tools/ObjectExplorer.cpp"
+			"src/mods/vr/Bindings.cpp"
+			"src/mods/vr/D3D11Component.cpp"
+			"src/mods/vr/D3D12Component.cpp"
+			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/ResourceCopier.cpp"
+			"src/mods/vr/d3d12/TextureContext.cpp"
+			"src/mods/vr/games/RE8VR.cpp"
+			"src/mods/vr/runtimes/OpenVR.cpp"
+			"src/mods/vr/runtimes/OpenXR.cpp"
+			"src/re2-imgui/imgui_impl_dx11.cpp"
+			"src/re2-imgui/imgui_impl_dx12.cpp"
+			"src/re2-imgui/imgui_impl_win32.cpp"
+			"src/utility/ImGui.cpp"
+			"src/D3D11Hook.hpp"
+			"src/D3D12Hook.hpp"
+			"src/DInputHook.hpp"
+			"src/ExceptionHandler.hpp"
+			"src/Genny.hpp"
+			"src/GennyIda.hpp"
+			"src/HookManager.hpp"
+			"src/LicenseStrings.hpp"
+			"src/Mod.hpp"
+			"src/Mods.hpp"
+			"src/REFramework.hpp"
+			"src/Tool.hpp"
+			"src/WindowFilter.hpp"
+			"src/WindowsMessageHook.hpp"
+			"src/mods/APIProxy.hpp"
+			"src/mods/Camera.hpp"
+			"src/mods/DeveloperTools.hpp"
+			"src/mods/FirstPerson.hpp"
+			"src/mods/FreeCam.hpp"
+			"src/mods/Graphics.hpp"
+			"src/mods/Hooks.hpp"
+			"src/mods/IntegrityCheckBypass.hpp"
+			"src/mods/ManualFlashlight.hpp"
+			"src/mods/PluginLoader.hpp"
+			"src/mods/REFrameworkConfig.hpp"
+			"src/mods/Scene.hpp"
+			"src/mods/ScriptRunner.hpp"
+			"src/mods/VR.hpp"
+			"src/mods/bindings/FS.hpp"
+			"src/mods/bindings/ImGui.hpp"
+			"src/mods/bindings/Json.hpp"
+			"src/mods/bindings/Sdk.hpp"
+			"src/mods/tools/ChainViewer.hpp"
+			"src/mods/tools/GameObjectsDisplay.hpp"
+			"src/mods/tools/ObjectExplorer.hpp"
+			"src/mods/vr/D3D11Component.hpp"
+			"src/mods/vr/D3D12Component.hpp"
+			"src/mods/vr/OverlayComponent.hpp"
+			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/ResourceCopier.hpp"
+			"src/mods/vr/d3d12/TextureContext.hpp"
+			"src/mods/vr/games/RE8VR.hpp"
+			"src/mods/vr/runtimes/OpenVR.hpp"
+			"src/mods/vr/runtimes/OpenXR.hpp"
+			"src/mods/vr/runtimes/VRRuntime.hpp"
+			"src/re2-imgui/af_baidu.hpp"
+			"src/re2-imgui/af_faprolight.hpp"
+			"src/re2-imgui/font_robotomedium.hpp"
+			"src/re2-imgui/re2_imconfig.hpp"
+			"src/utility/ImGui.hpp"
+			"src/re2-imgui/af_fadef.h"
+			"src/re2-imgui/imgui_impl_dx11.h"
+			"src/re2-imgui/imgui_impl_dx12.h"
+			"src/re2-imgui/imgui_impl_win32.h"
 		)
+
+		list(APPEND RE2_TDB66_SOURCES
+			cmake.toml
+		)
+
+		set(CMKR_SOURCES ${RE2_TDB66_SOURCES})
+		add_library(RE2_TDB66 SHARED)
+
+		if(RE2_TDB66_SOURCES)
+			target_sources(RE2_TDB66 PRIVATE ${RE2_TDB66_SOURCES})
+		endif()
+
+		target_compile_definitions(RE2_TDB66 PUBLIC
+			${CMKR_TARGET}
+			REFRAMEWORK_EXPORTS
+			"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
+		)
+
+		if(DEVELOPER_MODE) # developer-mode
+			target_compile_definitions(RE2_TDB66 PUBLIC
+				DEVELOPER
+			)
+		endif()
+
+		target_compile_features(RE2_TDB66 PUBLIC
+			cxx_std_20
+		)
+
+		target_compile_options(RE2_TDB66 PUBLIC
+			"/GS-"
+			"/bigobj"
+			"/EHa"
+		)
+
+		target_include_directories(RE2_TDB66 PUBLIC
+			"shared/"
+			"src/"
+			"include/"
+			"${OPENXR_SOURCE_DIR}/src"
+		)
+
+		target_link_directories(RE2_TDB66 PUBLIC
+			"dependencies/openvr/lib/win64/"
+		)
+
+		target_link_libraries(RE2_TDB66 PUBLIC
+			${CMKR_TARGET}SDK
+			utility
+			asmjit::asmjit
+			nlohmann_json
+			spdlog
+			lua
+			sol2
+			imgui
+			imguizmo
+			imnodes
+			minhook
+			d3d11
+			glm_static
+			shlwapi
+			openvr
+			openxr_loader
+			delayimp
+			DirectXTK
+			DirectXTK12
+		)
+
+		set_target_properties(RE2_TDB66 PROPERTIES
+			OUTPUT_NAME
+				dinput8
+			LINK_FLAGS
+				"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	target_compile_features(RE2_TDB66 PUBLIC
-		cxx_std_20
-	)
-
-	target_compile_options(RE2_TDB66 PUBLIC
-		"/GS-"
-		"/bigobj"
-		"/EHa"
-	)
-
-	target_include_directories(RE2_TDB66 PUBLIC
-		"shared/"
-		"src/"
-		"include/"
-		"${OPENXR_SOURCE_DIR}/src"
-	)
-
-	target_link_directories(RE2_TDB66 PUBLIC
-		"dependencies/openvr/lib/win64/"
-	)
-
-	target_link_libraries(RE2_TDB66 PUBLIC
-		${CMKR_TARGET}SDK
-		utility
-		asmjit::asmjit
-		nlohmann_json
-		spdlog
-		lua
-		sol2
-		imgui
-		imguizmo
-		imnodes
-		minhook
-		d3d11
-		glm_static
-		shlwapi
-		openvr
-		openxr_loader
-		delayimp
-		DirectXTK
-		DirectXTK12
-	)
-
-	set_target_properties(RE2_TDB66 PROPERTIES
-		OUTPUT_NAME
-			dinput8
-		LINK_FLAGS
-			"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target RE3SDK
-if(REF_BUILD_RE3_SDK OR REF_BUILD_FRAMEWORK) # build-re3-sdk
+if(REF_BUILD_RE3_SDK AND REF_BUILD_FRAMEWORK) # build-re3-sdk
 	set(CMKR_TARGET RE3SDK)
 	set(RE3SDK_SOURCES "")
 
@@ -2740,7 +2756,7 @@ if(REF_BUILD_RE3_SDK OR REF_BUILD_FRAMEWORK) # build-re3-sdk
 endif()
 
 # Target RE3_TDB67SDK
-if(REF_BUILD_RE3_TDB67SDK OR REF_BUILD_FRAMEWORK) # build-re3tdb67-sdk
+if(REF_BUILD_RE3_TDB67SDK AND REF_BUILD_FRAMEWORK) # build-re3tdb67-sdk
 	set(CMKR_TARGET RE3_TDB67SDK)
 	set(RE3_TDB67SDK_SOURCES "")
 
@@ -3351,588 +3367,594 @@ endif()
 
 # Target RE3
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET RE3)
-	set(RE3_SOURCES "")
+	if(REF_BUILD_RE3) # build-re3
+		set(CMKR_TARGET RE3)
+		set(RE3_SOURCES "")
 
-	list(APPEND RE3_SOURCES
-		"src/D3D11Hook.cpp"
-		"src/D3D12Hook.cpp"
-		"src/DInputHook.cpp"
-		"src/ExceptionHandler.cpp"
-		"src/HookManager.cpp"
-		"src/Main.cpp"
-		"src/Mods.cpp"
-		"src/REFramework.cpp"
-		"src/WindowsMessageHook.cpp"
-		"src/mods/APIProxy.cpp"
-		"src/mods/Camera.cpp"
-		"src/mods/DeveloperTools.cpp"
-		"src/mods/FirstPerson.cpp"
-		"src/mods/FreeCam.cpp"
-		"src/mods/Graphics.cpp"
-		"src/mods/Hooks.cpp"
-		"src/mods/IntegrityCheckBypass.cpp"
-		"src/mods/ManualFlashlight.cpp"
-		"src/mods/PluginLoader.cpp"
-		"src/mods/REFrameworkConfig.cpp"
-		"src/mods/Scene.cpp"
-		"src/mods/ScriptRunner.cpp"
-		"src/mods/VR.cpp"
-		"src/mods/bindings/FS.cpp"
-		"src/mods/bindings/ImGui.cpp"
-		"src/mods/bindings/Json.cpp"
-		"src/mods/bindings/Sdk.cpp"
-		"src/mods/tools/ChainViewer.cpp"
-		"src/mods/tools/GameObjectsDisplay.cpp"
-		"src/mods/tools/ObjectExplorer.cpp"
-		"src/mods/vr/Bindings.cpp"
-		"src/mods/vr/D3D11Component.cpp"
-		"src/mods/vr/D3D12Component.cpp"
-		"src/mods/vr/OverlayComponent.cpp"
-		"src/mods/vr/d3d12/ResourceCopier.cpp"
-		"src/mods/vr/d3d12/TextureContext.cpp"
-		"src/mods/vr/games/RE8VR.cpp"
-		"src/mods/vr/runtimes/OpenVR.cpp"
-		"src/mods/vr/runtimes/OpenXR.cpp"
-		"src/re2-imgui/imgui_impl_dx11.cpp"
-		"src/re2-imgui/imgui_impl_dx12.cpp"
-		"src/re2-imgui/imgui_impl_win32.cpp"
-		"src/utility/ImGui.cpp"
-		"src/D3D11Hook.hpp"
-		"src/D3D12Hook.hpp"
-		"src/DInputHook.hpp"
-		"src/ExceptionHandler.hpp"
-		"src/Genny.hpp"
-		"src/GennyIda.hpp"
-		"src/HookManager.hpp"
-		"src/LicenseStrings.hpp"
-		"src/Mod.hpp"
-		"src/Mods.hpp"
-		"src/REFramework.hpp"
-		"src/Tool.hpp"
-		"src/WindowFilter.hpp"
-		"src/WindowsMessageHook.hpp"
-		"src/mods/APIProxy.hpp"
-		"src/mods/Camera.hpp"
-		"src/mods/DeveloperTools.hpp"
-		"src/mods/FirstPerson.hpp"
-		"src/mods/FreeCam.hpp"
-		"src/mods/Graphics.hpp"
-		"src/mods/Hooks.hpp"
-		"src/mods/IntegrityCheckBypass.hpp"
-		"src/mods/ManualFlashlight.hpp"
-		"src/mods/PluginLoader.hpp"
-		"src/mods/REFrameworkConfig.hpp"
-		"src/mods/Scene.hpp"
-		"src/mods/ScriptRunner.hpp"
-		"src/mods/VR.hpp"
-		"src/mods/bindings/FS.hpp"
-		"src/mods/bindings/ImGui.hpp"
-		"src/mods/bindings/Json.hpp"
-		"src/mods/bindings/Sdk.hpp"
-		"src/mods/tools/ChainViewer.hpp"
-		"src/mods/tools/GameObjectsDisplay.hpp"
-		"src/mods/tools/ObjectExplorer.hpp"
-		"src/mods/vr/D3D11Component.hpp"
-		"src/mods/vr/D3D12Component.hpp"
-		"src/mods/vr/OverlayComponent.hpp"
-		"src/mods/vr/d3d12/ComPtr.hpp"
-		"src/mods/vr/d3d12/ResourceCopier.hpp"
-		"src/mods/vr/d3d12/TextureContext.hpp"
-		"src/mods/vr/games/RE8VR.hpp"
-		"src/mods/vr/runtimes/OpenVR.hpp"
-		"src/mods/vr/runtimes/OpenXR.hpp"
-		"src/mods/vr/runtimes/VRRuntime.hpp"
-		"src/re2-imgui/af_baidu.hpp"
-		"src/re2-imgui/af_faprolight.hpp"
-		"src/re2-imgui/font_robotomedium.hpp"
-		"src/re2-imgui/re2_imconfig.hpp"
-		"src/utility/ImGui.hpp"
-		"src/re2-imgui/af_fadef.h"
-		"src/re2-imgui/imgui_impl_dx11.h"
-		"src/re2-imgui/imgui_impl_dx12.h"
-		"src/re2-imgui/imgui_impl_win32.h"
-	)
-
-	list(APPEND RE3_SOURCES
-		cmake.toml
-	)
-
-	set(CMKR_SOURCES ${RE3_SOURCES})
-	add_library(RE3 SHARED)
-
-	if(RE3_SOURCES)
-		target_sources(RE3 PRIVATE ${RE3_SOURCES})
-	endif()
-
-	target_compile_definitions(RE3 PUBLIC
-		${CMKR_TARGET}
-		REFRAMEWORK_EXPORTS
-		"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
-	)
-
-	if(DEVELOPER_MODE) # developer-mode
-		target_compile_definitions(RE3 PUBLIC
-			DEVELOPER
+		list(APPEND RE3_SOURCES
+			"src/D3D11Hook.cpp"
+			"src/D3D12Hook.cpp"
+			"src/DInputHook.cpp"
+			"src/ExceptionHandler.cpp"
+			"src/HookManager.cpp"
+			"src/Main.cpp"
+			"src/Mods.cpp"
+			"src/REFramework.cpp"
+			"src/WindowsMessageHook.cpp"
+			"src/mods/APIProxy.cpp"
+			"src/mods/Camera.cpp"
+			"src/mods/DeveloperTools.cpp"
+			"src/mods/FirstPerson.cpp"
+			"src/mods/FreeCam.cpp"
+			"src/mods/Graphics.cpp"
+			"src/mods/Hooks.cpp"
+			"src/mods/IntegrityCheckBypass.cpp"
+			"src/mods/ManualFlashlight.cpp"
+			"src/mods/PluginLoader.cpp"
+			"src/mods/REFrameworkConfig.cpp"
+			"src/mods/Scene.cpp"
+			"src/mods/ScriptRunner.cpp"
+			"src/mods/VR.cpp"
+			"src/mods/bindings/FS.cpp"
+			"src/mods/bindings/ImGui.cpp"
+			"src/mods/bindings/Json.cpp"
+			"src/mods/bindings/Sdk.cpp"
+			"src/mods/tools/ChainViewer.cpp"
+			"src/mods/tools/GameObjectsDisplay.cpp"
+			"src/mods/tools/ObjectExplorer.cpp"
+			"src/mods/vr/Bindings.cpp"
+			"src/mods/vr/D3D11Component.cpp"
+			"src/mods/vr/D3D12Component.cpp"
+			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/ResourceCopier.cpp"
+			"src/mods/vr/d3d12/TextureContext.cpp"
+			"src/mods/vr/games/RE8VR.cpp"
+			"src/mods/vr/runtimes/OpenVR.cpp"
+			"src/mods/vr/runtimes/OpenXR.cpp"
+			"src/re2-imgui/imgui_impl_dx11.cpp"
+			"src/re2-imgui/imgui_impl_dx12.cpp"
+			"src/re2-imgui/imgui_impl_win32.cpp"
+			"src/utility/ImGui.cpp"
+			"src/D3D11Hook.hpp"
+			"src/D3D12Hook.hpp"
+			"src/DInputHook.hpp"
+			"src/ExceptionHandler.hpp"
+			"src/Genny.hpp"
+			"src/GennyIda.hpp"
+			"src/HookManager.hpp"
+			"src/LicenseStrings.hpp"
+			"src/Mod.hpp"
+			"src/Mods.hpp"
+			"src/REFramework.hpp"
+			"src/Tool.hpp"
+			"src/WindowFilter.hpp"
+			"src/WindowsMessageHook.hpp"
+			"src/mods/APIProxy.hpp"
+			"src/mods/Camera.hpp"
+			"src/mods/DeveloperTools.hpp"
+			"src/mods/FirstPerson.hpp"
+			"src/mods/FreeCam.hpp"
+			"src/mods/Graphics.hpp"
+			"src/mods/Hooks.hpp"
+			"src/mods/IntegrityCheckBypass.hpp"
+			"src/mods/ManualFlashlight.hpp"
+			"src/mods/PluginLoader.hpp"
+			"src/mods/REFrameworkConfig.hpp"
+			"src/mods/Scene.hpp"
+			"src/mods/ScriptRunner.hpp"
+			"src/mods/VR.hpp"
+			"src/mods/bindings/FS.hpp"
+			"src/mods/bindings/ImGui.hpp"
+			"src/mods/bindings/Json.hpp"
+			"src/mods/bindings/Sdk.hpp"
+			"src/mods/tools/ChainViewer.hpp"
+			"src/mods/tools/GameObjectsDisplay.hpp"
+			"src/mods/tools/ObjectExplorer.hpp"
+			"src/mods/vr/D3D11Component.hpp"
+			"src/mods/vr/D3D12Component.hpp"
+			"src/mods/vr/OverlayComponent.hpp"
+			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/ResourceCopier.hpp"
+			"src/mods/vr/d3d12/TextureContext.hpp"
+			"src/mods/vr/games/RE8VR.hpp"
+			"src/mods/vr/runtimes/OpenVR.hpp"
+			"src/mods/vr/runtimes/OpenXR.hpp"
+			"src/mods/vr/runtimes/VRRuntime.hpp"
+			"src/re2-imgui/af_baidu.hpp"
+			"src/re2-imgui/af_faprolight.hpp"
+			"src/re2-imgui/font_robotomedium.hpp"
+			"src/re2-imgui/re2_imconfig.hpp"
+			"src/utility/ImGui.hpp"
+			"src/re2-imgui/af_fadef.h"
+			"src/re2-imgui/imgui_impl_dx11.h"
+			"src/re2-imgui/imgui_impl_dx12.h"
+			"src/re2-imgui/imgui_impl_win32.h"
 		)
+
+		list(APPEND RE3_SOURCES
+			cmake.toml
+		)
+
+		set(CMKR_SOURCES ${RE3_SOURCES})
+		add_library(RE3 SHARED)
+
+		if(RE3_SOURCES)
+			target_sources(RE3 PRIVATE ${RE3_SOURCES})
+		endif()
+
+		target_compile_definitions(RE3 PUBLIC
+			${CMKR_TARGET}
+			REFRAMEWORK_EXPORTS
+			"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
+		)
+
+		if(DEVELOPER_MODE) # developer-mode
+			target_compile_definitions(RE3 PUBLIC
+				DEVELOPER
+			)
+		endif()
+
+		target_compile_features(RE3 PUBLIC
+			cxx_std_20
+		)
+
+		target_compile_options(RE3 PUBLIC
+			"/GS-"
+			"/bigobj"
+			"/EHa"
+		)
+
+		target_include_directories(RE3 PUBLIC
+			"shared/"
+			"src/"
+			"include/"
+			"${OPENXR_SOURCE_DIR}/src"
+		)
+
+		target_link_directories(RE3 PUBLIC
+			"dependencies/openvr/lib/win64/"
+		)
+
+		target_link_libraries(RE3 PUBLIC
+			${CMKR_TARGET}SDK
+			utility
+			asmjit::asmjit
+			nlohmann_json
+			spdlog
+			lua
+			sol2
+			imgui
+			imguizmo
+			imnodes
+			minhook
+			d3d11
+			glm_static
+			shlwapi
+			openvr
+			openxr_loader
+			delayimp
+			DirectXTK
+			DirectXTK12
+		)
+
+		set_target_properties(RE3 PROPERTIES
+			OUTPUT_NAME
+				dinput8
+			LINK_FLAGS
+				"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	target_compile_features(RE3 PUBLIC
-		cxx_std_20
-	)
-
-	target_compile_options(RE3 PUBLIC
-		"/GS-"
-		"/bigobj"
-		"/EHa"
-	)
-
-	target_include_directories(RE3 PUBLIC
-		"shared/"
-		"src/"
-		"include/"
-		"${OPENXR_SOURCE_DIR}/src"
-	)
-
-	target_link_directories(RE3 PUBLIC
-		"dependencies/openvr/lib/win64/"
-	)
-
-	target_link_libraries(RE3 PUBLIC
-		${CMKR_TARGET}SDK
-		utility
-		asmjit::asmjit
-		nlohmann_json
-		spdlog
-		lua
-		sol2
-		imgui
-		imguizmo
-		imnodes
-		minhook
-		d3d11
-		glm_static
-		shlwapi
-		openvr
-		openxr_loader
-		delayimp
-		DirectXTK
-		DirectXTK12
-	)
-
-	set_target_properties(RE3 PROPERTIES
-		OUTPUT_NAME
-			dinput8
-		LINK_FLAGS
-			"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target RE3_TDB67
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET RE3_TDB67)
-	set(RE3_TDB67_SOURCES "")
+	if(REF_BUILD_RE3_TDB67) # build-re3tdb67
+		set(CMKR_TARGET RE3_TDB67)
+		set(RE3_TDB67_SOURCES "")
 
-	list(APPEND RE3_TDB67_SOURCES
-		"src/D3D11Hook.cpp"
-		"src/D3D12Hook.cpp"
-		"src/DInputHook.cpp"
-		"src/ExceptionHandler.cpp"
-		"src/HookManager.cpp"
-		"src/Main.cpp"
-		"src/Mods.cpp"
-		"src/REFramework.cpp"
-		"src/WindowsMessageHook.cpp"
-		"src/mods/APIProxy.cpp"
-		"src/mods/Camera.cpp"
-		"src/mods/DeveloperTools.cpp"
-		"src/mods/FirstPerson.cpp"
-		"src/mods/FreeCam.cpp"
-		"src/mods/Graphics.cpp"
-		"src/mods/Hooks.cpp"
-		"src/mods/IntegrityCheckBypass.cpp"
-		"src/mods/ManualFlashlight.cpp"
-		"src/mods/PluginLoader.cpp"
-		"src/mods/REFrameworkConfig.cpp"
-		"src/mods/Scene.cpp"
-		"src/mods/ScriptRunner.cpp"
-		"src/mods/VR.cpp"
-		"src/mods/bindings/FS.cpp"
-		"src/mods/bindings/ImGui.cpp"
-		"src/mods/bindings/Json.cpp"
-		"src/mods/bindings/Sdk.cpp"
-		"src/mods/tools/ChainViewer.cpp"
-		"src/mods/tools/GameObjectsDisplay.cpp"
-		"src/mods/tools/ObjectExplorer.cpp"
-		"src/mods/vr/Bindings.cpp"
-		"src/mods/vr/D3D11Component.cpp"
-		"src/mods/vr/D3D12Component.cpp"
-		"src/mods/vr/OverlayComponent.cpp"
-		"src/mods/vr/d3d12/ResourceCopier.cpp"
-		"src/mods/vr/d3d12/TextureContext.cpp"
-		"src/mods/vr/games/RE8VR.cpp"
-		"src/mods/vr/runtimes/OpenVR.cpp"
-		"src/mods/vr/runtimes/OpenXR.cpp"
-		"src/re2-imgui/imgui_impl_dx11.cpp"
-		"src/re2-imgui/imgui_impl_dx12.cpp"
-		"src/re2-imgui/imgui_impl_win32.cpp"
-		"src/utility/ImGui.cpp"
-		"src/D3D11Hook.hpp"
-		"src/D3D12Hook.hpp"
-		"src/DInputHook.hpp"
-		"src/ExceptionHandler.hpp"
-		"src/Genny.hpp"
-		"src/GennyIda.hpp"
-		"src/HookManager.hpp"
-		"src/LicenseStrings.hpp"
-		"src/Mod.hpp"
-		"src/Mods.hpp"
-		"src/REFramework.hpp"
-		"src/Tool.hpp"
-		"src/WindowFilter.hpp"
-		"src/WindowsMessageHook.hpp"
-		"src/mods/APIProxy.hpp"
-		"src/mods/Camera.hpp"
-		"src/mods/DeveloperTools.hpp"
-		"src/mods/FirstPerson.hpp"
-		"src/mods/FreeCam.hpp"
-		"src/mods/Graphics.hpp"
-		"src/mods/Hooks.hpp"
-		"src/mods/IntegrityCheckBypass.hpp"
-		"src/mods/ManualFlashlight.hpp"
-		"src/mods/PluginLoader.hpp"
-		"src/mods/REFrameworkConfig.hpp"
-		"src/mods/Scene.hpp"
-		"src/mods/ScriptRunner.hpp"
-		"src/mods/VR.hpp"
-		"src/mods/bindings/FS.hpp"
-		"src/mods/bindings/ImGui.hpp"
-		"src/mods/bindings/Json.hpp"
-		"src/mods/bindings/Sdk.hpp"
-		"src/mods/tools/ChainViewer.hpp"
-		"src/mods/tools/GameObjectsDisplay.hpp"
-		"src/mods/tools/ObjectExplorer.hpp"
-		"src/mods/vr/D3D11Component.hpp"
-		"src/mods/vr/D3D12Component.hpp"
-		"src/mods/vr/OverlayComponent.hpp"
-		"src/mods/vr/d3d12/ComPtr.hpp"
-		"src/mods/vr/d3d12/ResourceCopier.hpp"
-		"src/mods/vr/d3d12/TextureContext.hpp"
-		"src/mods/vr/games/RE8VR.hpp"
-		"src/mods/vr/runtimes/OpenVR.hpp"
-		"src/mods/vr/runtimes/OpenXR.hpp"
-		"src/mods/vr/runtimes/VRRuntime.hpp"
-		"src/re2-imgui/af_baidu.hpp"
-		"src/re2-imgui/af_faprolight.hpp"
-		"src/re2-imgui/font_robotomedium.hpp"
-		"src/re2-imgui/re2_imconfig.hpp"
-		"src/utility/ImGui.hpp"
-		"src/re2-imgui/af_fadef.h"
-		"src/re2-imgui/imgui_impl_dx11.h"
-		"src/re2-imgui/imgui_impl_dx12.h"
-		"src/re2-imgui/imgui_impl_win32.h"
-	)
-
-	list(APPEND RE3_TDB67_SOURCES
-		cmake.toml
-	)
-
-	set(CMKR_SOURCES ${RE3_TDB67_SOURCES})
-	add_library(RE3_TDB67 SHARED)
-
-	if(RE3_TDB67_SOURCES)
-		target_sources(RE3_TDB67 PRIVATE ${RE3_TDB67_SOURCES})
-	endif()
-
-	target_compile_definitions(RE3_TDB67 PUBLIC
-		${CMKR_TARGET}
-		REFRAMEWORK_EXPORTS
-		"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
-	)
-
-	if(DEVELOPER_MODE) # developer-mode
-		target_compile_definitions(RE3_TDB67 PUBLIC
-			DEVELOPER
+		list(APPEND RE3_TDB67_SOURCES
+			"src/D3D11Hook.cpp"
+			"src/D3D12Hook.cpp"
+			"src/DInputHook.cpp"
+			"src/ExceptionHandler.cpp"
+			"src/HookManager.cpp"
+			"src/Main.cpp"
+			"src/Mods.cpp"
+			"src/REFramework.cpp"
+			"src/WindowsMessageHook.cpp"
+			"src/mods/APIProxy.cpp"
+			"src/mods/Camera.cpp"
+			"src/mods/DeveloperTools.cpp"
+			"src/mods/FirstPerson.cpp"
+			"src/mods/FreeCam.cpp"
+			"src/mods/Graphics.cpp"
+			"src/mods/Hooks.cpp"
+			"src/mods/IntegrityCheckBypass.cpp"
+			"src/mods/ManualFlashlight.cpp"
+			"src/mods/PluginLoader.cpp"
+			"src/mods/REFrameworkConfig.cpp"
+			"src/mods/Scene.cpp"
+			"src/mods/ScriptRunner.cpp"
+			"src/mods/VR.cpp"
+			"src/mods/bindings/FS.cpp"
+			"src/mods/bindings/ImGui.cpp"
+			"src/mods/bindings/Json.cpp"
+			"src/mods/bindings/Sdk.cpp"
+			"src/mods/tools/ChainViewer.cpp"
+			"src/mods/tools/GameObjectsDisplay.cpp"
+			"src/mods/tools/ObjectExplorer.cpp"
+			"src/mods/vr/Bindings.cpp"
+			"src/mods/vr/D3D11Component.cpp"
+			"src/mods/vr/D3D12Component.cpp"
+			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/ResourceCopier.cpp"
+			"src/mods/vr/d3d12/TextureContext.cpp"
+			"src/mods/vr/games/RE8VR.cpp"
+			"src/mods/vr/runtimes/OpenVR.cpp"
+			"src/mods/vr/runtimes/OpenXR.cpp"
+			"src/re2-imgui/imgui_impl_dx11.cpp"
+			"src/re2-imgui/imgui_impl_dx12.cpp"
+			"src/re2-imgui/imgui_impl_win32.cpp"
+			"src/utility/ImGui.cpp"
+			"src/D3D11Hook.hpp"
+			"src/D3D12Hook.hpp"
+			"src/DInputHook.hpp"
+			"src/ExceptionHandler.hpp"
+			"src/Genny.hpp"
+			"src/GennyIda.hpp"
+			"src/HookManager.hpp"
+			"src/LicenseStrings.hpp"
+			"src/Mod.hpp"
+			"src/Mods.hpp"
+			"src/REFramework.hpp"
+			"src/Tool.hpp"
+			"src/WindowFilter.hpp"
+			"src/WindowsMessageHook.hpp"
+			"src/mods/APIProxy.hpp"
+			"src/mods/Camera.hpp"
+			"src/mods/DeveloperTools.hpp"
+			"src/mods/FirstPerson.hpp"
+			"src/mods/FreeCam.hpp"
+			"src/mods/Graphics.hpp"
+			"src/mods/Hooks.hpp"
+			"src/mods/IntegrityCheckBypass.hpp"
+			"src/mods/ManualFlashlight.hpp"
+			"src/mods/PluginLoader.hpp"
+			"src/mods/REFrameworkConfig.hpp"
+			"src/mods/Scene.hpp"
+			"src/mods/ScriptRunner.hpp"
+			"src/mods/VR.hpp"
+			"src/mods/bindings/FS.hpp"
+			"src/mods/bindings/ImGui.hpp"
+			"src/mods/bindings/Json.hpp"
+			"src/mods/bindings/Sdk.hpp"
+			"src/mods/tools/ChainViewer.hpp"
+			"src/mods/tools/GameObjectsDisplay.hpp"
+			"src/mods/tools/ObjectExplorer.hpp"
+			"src/mods/vr/D3D11Component.hpp"
+			"src/mods/vr/D3D12Component.hpp"
+			"src/mods/vr/OverlayComponent.hpp"
+			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/ResourceCopier.hpp"
+			"src/mods/vr/d3d12/TextureContext.hpp"
+			"src/mods/vr/games/RE8VR.hpp"
+			"src/mods/vr/runtimes/OpenVR.hpp"
+			"src/mods/vr/runtimes/OpenXR.hpp"
+			"src/mods/vr/runtimes/VRRuntime.hpp"
+			"src/re2-imgui/af_baidu.hpp"
+			"src/re2-imgui/af_faprolight.hpp"
+			"src/re2-imgui/font_robotomedium.hpp"
+			"src/re2-imgui/re2_imconfig.hpp"
+			"src/utility/ImGui.hpp"
+			"src/re2-imgui/af_fadef.h"
+			"src/re2-imgui/imgui_impl_dx11.h"
+			"src/re2-imgui/imgui_impl_dx12.h"
+			"src/re2-imgui/imgui_impl_win32.h"
 		)
+
+		list(APPEND RE3_TDB67_SOURCES
+			cmake.toml
+		)
+
+		set(CMKR_SOURCES ${RE3_TDB67_SOURCES})
+		add_library(RE3_TDB67 SHARED)
+
+		if(RE3_TDB67_SOURCES)
+			target_sources(RE3_TDB67 PRIVATE ${RE3_TDB67_SOURCES})
+		endif()
+
+		target_compile_definitions(RE3_TDB67 PUBLIC
+			${CMKR_TARGET}
+			REFRAMEWORK_EXPORTS
+			"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
+		)
+
+		if(DEVELOPER_MODE) # developer-mode
+			target_compile_definitions(RE3_TDB67 PUBLIC
+				DEVELOPER
+			)
+		endif()
+
+		target_compile_features(RE3_TDB67 PUBLIC
+			cxx_std_20
+		)
+
+		target_compile_options(RE3_TDB67 PUBLIC
+			"/GS-"
+			"/bigobj"
+			"/EHa"
+		)
+
+		target_include_directories(RE3_TDB67 PUBLIC
+			"shared/"
+			"src/"
+			"include/"
+			"${OPENXR_SOURCE_DIR}/src"
+		)
+
+		target_link_directories(RE3_TDB67 PUBLIC
+			"dependencies/openvr/lib/win64/"
+		)
+
+		target_link_libraries(RE3_TDB67 PUBLIC
+			${CMKR_TARGET}SDK
+			utility
+			asmjit::asmjit
+			nlohmann_json
+			spdlog
+			lua
+			sol2
+			imgui
+			imguizmo
+			imnodes
+			minhook
+			d3d11
+			glm_static
+			shlwapi
+			openvr
+			openxr_loader
+			delayimp
+			DirectXTK
+			DirectXTK12
+		)
+
+		set_target_properties(RE3_TDB67 PROPERTIES
+			OUTPUT_NAME
+				dinput8
+			LINK_FLAGS
+				"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	target_compile_features(RE3_TDB67 PUBLIC
-		cxx_std_20
-	)
-
-	target_compile_options(RE3_TDB67 PUBLIC
-		"/GS-"
-		"/bigobj"
-		"/EHa"
-	)
-
-	target_include_directories(RE3_TDB67 PUBLIC
-		"shared/"
-		"src/"
-		"include/"
-		"${OPENXR_SOURCE_DIR}/src"
-	)
-
-	target_link_directories(RE3_TDB67 PUBLIC
-		"dependencies/openvr/lib/win64/"
-	)
-
-	target_link_libraries(RE3_TDB67 PUBLIC
-		${CMKR_TARGET}SDK
-		utility
-		asmjit::asmjit
-		nlohmann_json
-		spdlog
-		lua
-		sol2
-		imgui
-		imguizmo
-		imnodes
-		minhook
-		d3d11
-		glm_static
-		shlwapi
-		openvr
-		openxr_loader
-		delayimp
-		DirectXTK
-		DirectXTK12
-	)
-
-	set_target_properties(RE3_TDB67 PROPERTIES
-		OUTPUT_NAME
-			dinput8
-		LINK_FLAGS
-			"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target RE4
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET RE4)
-	set(RE4_SOURCES "")
+	if(REF_BUILD_RE4) # build-re4
+		set(CMKR_TARGET RE4)
+		set(RE4_SOURCES "")
 
-	list(APPEND RE4_SOURCES
-		"src/D3D11Hook.cpp"
-		"src/D3D12Hook.cpp"
-		"src/DInputHook.cpp"
-		"src/ExceptionHandler.cpp"
-		"src/HookManager.cpp"
-		"src/Main.cpp"
-		"src/Mods.cpp"
-		"src/REFramework.cpp"
-		"src/WindowsMessageHook.cpp"
-		"src/mods/APIProxy.cpp"
-		"src/mods/Camera.cpp"
-		"src/mods/DeveloperTools.cpp"
-		"src/mods/FirstPerson.cpp"
-		"src/mods/FreeCam.cpp"
-		"src/mods/Graphics.cpp"
-		"src/mods/Hooks.cpp"
-		"src/mods/IntegrityCheckBypass.cpp"
-		"src/mods/ManualFlashlight.cpp"
-		"src/mods/PluginLoader.cpp"
-		"src/mods/REFrameworkConfig.cpp"
-		"src/mods/Scene.cpp"
-		"src/mods/ScriptRunner.cpp"
-		"src/mods/VR.cpp"
-		"src/mods/bindings/FS.cpp"
-		"src/mods/bindings/ImGui.cpp"
-		"src/mods/bindings/Json.cpp"
-		"src/mods/bindings/Sdk.cpp"
-		"src/mods/tools/ChainViewer.cpp"
-		"src/mods/tools/GameObjectsDisplay.cpp"
-		"src/mods/tools/ObjectExplorer.cpp"
-		"src/mods/vr/Bindings.cpp"
-		"src/mods/vr/D3D11Component.cpp"
-		"src/mods/vr/D3D12Component.cpp"
-		"src/mods/vr/OverlayComponent.cpp"
-		"src/mods/vr/d3d12/ResourceCopier.cpp"
-		"src/mods/vr/d3d12/TextureContext.cpp"
-		"src/mods/vr/games/RE8VR.cpp"
-		"src/mods/vr/runtimes/OpenVR.cpp"
-		"src/mods/vr/runtimes/OpenXR.cpp"
-		"src/re2-imgui/imgui_impl_dx11.cpp"
-		"src/re2-imgui/imgui_impl_dx12.cpp"
-		"src/re2-imgui/imgui_impl_win32.cpp"
-		"src/utility/ImGui.cpp"
-		"src/D3D11Hook.hpp"
-		"src/D3D12Hook.hpp"
-		"src/DInputHook.hpp"
-		"src/ExceptionHandler.hpp"
-		"src/Genny.hpp"
-		"src/GennyIda.hpp"
-		"src/HookManager.hpp"
-		"src/LicenseStrings.hpp"
-		"src/Mod.hpp"
-		"src/Mods.hpp"
-		"src/REFramework.hpp"
-		"src/Tool.hpp"
-		"src/WindowFilter.hpp"
-		"src/WindowsMessageHook.hpp"
-		"src/mods/APIProxy.hpp"
-		"src/mods/Camera.hpp"
-		"src/mods/DeveloperTools.hpp"
-		"src/mods/FirstPerson.hpp"
-		"src/mods/FreeCam.hpp"
-		"src/mods/Graphics.hpp"
-		"src/mods/Hooks.hpp"
-		"src/mods/IntegrityCheckBypass.hpp"
-		"src/mods/ManualFlashlight.hpp"
-		"src/mods/PluginLoader.hpp"
-		"src/mods/REFrameworkConfig.hpp"
-		"src/mods/Scene.hpp"
-		"src/mods/ScriptRunner.hpp"
-		"src/mods/VR.hpp"
-		"src/mods/bindings/FS.hpp"
-		"src/mods/bindings/ImGui.hpp"
-		"src/mods/bindings/Json.hpp"
-		"src/mods/bindings/Sdk.hpp"
-		"src/mods/tools/ChainViewer.hpp"
-		"src/mods/tools/GameObjectsDisplay.hpp"
-		"src/mods/tools/ObjectExplorer.hpp"
-		"src/mods/vr/D3D11Component.hpp"
-		"src/mods/vr/D3D12Component.hpp"
-		"src/mods/vr/OverlayComponent.hpp"
-		"src/mods/vr/d3d12/ComPtr.hpp"
-		"src/mods/vr/d3d12/ResourceCopier.hpp"
-		"src/mods/vr/d3d12/TextureContext.hpp"
-		"src/mods/vr/games/RE8VR.hpp"
-		"src/mods/vr/runtimes/OpenVR.hpp"
-		"src/mods/vr/runtimes/OpenXR.hpp"
-		"src/mods/vr/runtimes/VRRuntime.hpp"
-		"src/re2-imgui/af_baidu.hpp"
-		"src/re2-imgui/af_faprolight.hpp"
-		"src/re2-imgui/font_robotomedium.hpp"
-		"src/re2-imgui/re2_imconfig.hpp"
-		"src/utility/ImGui.hpp"
-		"src/re2-imgui/af_fadef.h"
-		"src/re2-imgui/imgui_impl_dx11.h"
-		"src/re2-imgui/imgui_impl_dx12.h"
-		"src/re2-imgui/imgui_impl_win32.h"
-	)
-
-	list(APPEND RE4_SOURCES
-		cmake.toml
-	)
-
-	set(CMKR_SOURCES ${RE4_SOURCES})
-	add_library(RE4 SHARED)
-
-	if(RE4_SOURCES)
-		target_sources(RE4 PRIVATE ${RE4_SOURCES})
-	endif()
-
-	target_compile_definitions(RE4 PUBLIC
-		${CMKR_TARGET}
-		REFRAMEWORK_EXPORTS
-		"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
-	)
-
-	if(DEVELOPER_MODE) # developer-mode
-		target_compile_definitions(RE4 PUBLIC
-			DEVELOPER
+		list(APPEND RE4_SOURCES
+			"src/D3D11Hook.cpp"
+			"src/D3D12Hook.cpp"
+			"src/DInputHook.cpp"
+			"src/ExceptionHandler.cpp"
+			"src/HookManager.cpp"
+			"src/Main.cpp"
+			"src/Mods.cpp"
+			"src/REFramework.cpp"
+			"src/WindowsMessageHook.cpp"
+			"src/mods/APIProxy.cpp"
+			"src/mods/Camera.cpp"
+			"src/mods/DeveloperTools.cpp"
+			"src/mods/FirstPerson.cpp"
+			"src/mods/FreeCam.cpp"
+			"src/mods/Graphics.cpp"
+			"src/mods/Hooks.cpp"
+			"src/mods/IntegrityCheckBypass.cpp"
+			"src/mods/ManualFlashlight.cpp"
+			"src/mods/PluginLoader.cpp"
+			"src/mods/REFrameworkConfig.cpp"
+			"src/mods/Scene.cpp"
+			"src/mods/ScriptRunner.cpp"
+			"src/mods/VR.cpp"
+			"src/mods/bindings/FS.cpp"
+			"src/mods/bindings/ImGui.cpp"
+			"src/mods/bindings/Json.cpp"
+			"src/mods/bindings/Sdk.cpp"
+			"src/mods/tools/ChainViewer.cpp"
+			"src/mods/tools/GameObjectsDisplay.cpp"
+			"src/mods/tools/ObjectExplorer.cpp"
+			"src/mods/vr/Bindings.cpp"
+			"src/mods/vr/D3D11Component.cpp"
+			"src/mods/vr/D3D12Component.cpp"
+			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/ResourceCopier.cpp"
+			"src/mods/vr/d3d12/TextureContext.cpp"
+			"src/mods/vr/games/RE8VR.cpp"
+			"src/mods/vr/runtimes/OpenVR.cpp"
+			"src/mods/vr/runtimes/OpenXR.cpp"
+			"src/re2-imgui/imgui_impl_dx11.cpp"
+			"src/re2-imgui/imgui_impl_dx12.cpp"
+			"src/re2-imgui/imgui_impl_win32.cpp"
+			"src/utility/ImGui.cpp"
+			"src/D3D11Hook.hpp"
+			"src/D3D12Hook.hpp"
+			"src/DInputHook.hpp"
+			"src/ExceptionHandler.hpp"
+			"src/Genny.hpp"
+			"src/GennyIda.hpp"
+			"src/HookManager.hpp"
+			"src/LicenseStrings.hpp"
+			"src/Mod.hpp"
+			"src/Mods.hpp"
+			"src/REFramework.hpp"
+			"src/Tool.hpp"
+			"src/WindowFilter.hpp"
+			"src/WindowsMessageHook.hpp"
+			"src/mods/APIProxy.hpp"
+			"src/mods/Camera.hpp"
+			"src/mods/DeveloperTools.hpp"
+			"src/mods/FirstPerson.hpp"
+			"src/mods/FreeCam.hpp"
+			"src/mods/Graphics.hpp"
+			"src/mods/Hooks.hpp"
+			"src/mods/IntegrityCheckBypass.hpp"
+			"src/mods/ManualFlashlight.hpp"
+			"src/mods/PluginLoader.hpp"
+			"src/mods/REFrameworkConfig.hpp"
+			"src/mods/Scene.hpp"
+			"src/mods/ScriptRunner.hpp"
+			"src/mods/VR.hpp"
+			"src/mods/bindings/FS.hpp"
+			"src/mods/bindings/ImGui.hpp"
+			"src/mods/bindings/Json.hpp"
+			"src/mods/bindings/Sdk.hpp"
+			"src/mods/tools/ChainViewer.hpp"
+			"src/mods/tools/GameObjectsDisplay.hpp"
+			"src/mods/tools/ObjectExplorer.hpp"
+			"src/mods/vr/D3D11Component.hpp"
+			"src/mods/vr/D3D12Component.hpp"
+			"src/mods/vr/OverlayComponent.hpp"
+			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/ResourceCopier.hpp"
+			"src/mods/vr/d3d12/TextureContext.hpp"
+			"src/mods/vr/games/RE8VR.hpp"
+			"src/mods/vr/runtimes/OpenVR.hpp"
+			"src/mods/vr/runtimes/OpenXR.hpp"
+			"src/mods/vr/runtimes/VRRuntime.hpp"
+			"src/re2-imgui/af_baidu.hpp"
+			"src/re2-imgui/af_faprolight.hpp"
+			"src/re2-imgui/font_robotomedium.hpp"
+			"src/re2-imgui/re2_imconfig.hpp"
+			"src/utility/ImGui.hpp"
+			"src/re2-imgui/af_fadef.h"
+			"src/re2-imgui/imgui_impl_dx11.h"
+			"src/re2-imgui/imgui_impl_dx12.h"
+			"src/re2-imgui/imgui_impl_win32.h"
 		)
+
+		list(APPEND RE4_SOURCES
+			cmake.toml
+		)
+
+		set(CMKR_SOURCES ${RE4_SOURCES})
+		add_library(RE4 SHARED)
+
+		if(RE4_SOURCES)
+			target_sources(RE4 PRIVATE ${RE4_SOURCES})
+		endif()
+
+		target_compile_definitions(RE4 PUBLIC
+			${CMKR_TARGET}
+			REFRAMEWORK_EXPORTS
+			"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
+		)
+
+		if(DEVELOPER_MODE) # developer-mode
+			target_compile_definitions(RE4 PUBLIC
+				DEVELOPER
+			)
+		endif()
+
+		target_compile_features(RE4 PUBLIC
+			cxx_std_20
+		)
+
+		target_compile_options(RE4 PUBLIC
+			"/GS-"
+			"/bigobj"
+			"/EHa"
+		)
+
+		target_include_directories(RE4 PUBLIC
+			"shared/"
+			"src/"
+			"include/"
+			"${OPENXR_SOURCE_DIR}/src"
+		)
+
+		target_link_directories(RE4 PUBLIC
+			"dependencies/openvr/lib/win64/"
+		)
+
+		target_link_libraries(RE4 PUBLIC
+			${CMKR_TARGET}SDK
+			utility
+			asmjit::asmjit
+			nlohmann_json
+			spdlog
+			lua
+			sol2
+			imgui
+			imguizmo
+			imnodes
+			minhook
+			d3d11
+			glm_static
+			shlwapi
+			openvr
+			openxr_loader
+			delayimp
+			DirectXTK
+			DirectXTK12
+		)
+
+		set_target_properties(RE4 PROPERTIES
+			OUTPUT_NAME
+				dinput8
+			LINK_FLAGS
+				"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	target_compile_features(RE4 PUBLIC
-		cxx_std_20
-	)
-
-	target_compile_options(RE4 PUBLIC
-		"/GS-"
-		"/bigobj"
-		"/EHa"
-	)
-
-	target_include_directories(RE4 PUBLIC
-		"shared/"
-		"src/"
-		"include/"
-		"${OPENXR_SOURCE_DIR}/src"
-	)
-
-	target_link_directories(RE4 PUBLIC
-		"dependencies/openvr/lib/win64/"
-	)
-
-	target_link_libraries(RE4 PUBLIC
-		${CMKR_TARGET}SDK
-		utility
-		asmjit::asmjit
-		nlohmann_json
-		spdlog
-		lua
-		sol2
-		imgui
-		imguizmo
-		imnodes
-		minhook
-		d3d11
-		glm_static
-		shlwapi
-		openvr
-		openxr_loader
-		delayimp
-		DirectXTK
-		DirectXTK12
-	)
-
-	set_target_properties(RE4 PROPERTIES
-		OUTPUT_NAME
-			dinput8
-		LINK_FLAGS
-			"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target RE4SDK
-if(REF_BUILD_RE4_SDK OR REF_BUILD_FRAMEWORK) # build-re4-sdk
+if(REF_BUILD_RE4_SDK AND REF_BUILD_FRAMEWORK) # build-re4-sdk
 	set(CMKR_TARGET RE4SDK)
 	set(RE4SDK_SOURCES "")
 
@@ -4543,7 +4565,7 @@ if(REF_BUILD_RE4_SDK OR REF_BUILD_FRAMEWORK) # build-re4-sdk
 endif()
 
 # Target RE7SDK
-if(REF_BUILD_RE7_SDK OR REF_BUILD_FRAMEWORK) # build-re7-sdk
+if(REF_BUILD_RE7_SDK AND REF_BUILD_FRAMEWORK) # build-re7-sdk
 	set(CMKR_TARGET RE7SDK)
 	set(RE7SDK_SOURCES "")
 
@@ -5152,7 +5174,7 @@ if(REF_BUILD_RE7_SDK OR REF_BUILD_FRAMEWORK) # build-re7-sdk
 endif()
 
 # Target RE7_TDB49SDK
-if(REF_BUILD_RE7_TDB49SDK OR REF_BUILD_FRAMEWORK) # build-re7tdb49-sdk
+if(REF_BUILD_RE7_TDB49SDK AND REF_BUILD_FRAMEWORK) # build-re7tdb49-sdk
 	set(CMKR_TARGET RE7_TDB49SDK)
 	set(RE7_TDB49SDK_SOURCES "")
 
@@ -5763,394 +5785,398 @@ endif()
 
 # Target RE7
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET RE7)
-	set(RE7_SOURCES "")
+	if(REF_BUILD_RE7) # build-re7
+		set(CMKR_TARGET RE7)
+		set(RE7_SOURCES "")
 
-	list(APPEND RE7_SOURCES
-		"src/D3D11Hook.cpp"
-		"src/D3D12Hook.cpp"
-		"src/DInputHook.cpp"
-		"src/ExceptionHandler.cpp"
-		"src/HookManager.cpp"
-		"src/Main.cpp"
-		"src/Mods.cpp"
-		"src/REFramework.cpp"
-		"src/WindowsMessageHook.cpp"
-		"src/mods/APIProxy.cpp"
-		"src/mods/Camera.cpp"
-		"src/mods/DeveloperTools.cpp"
-		"src/mods/FirstPerson.cpp"
-		"src/mods/FreeCam.cpp"
-		"src/mods/Graphics.cpp"
-		"src/mods/Hooks.cpp"
-		"src/mods/IntegrityCheckBypass.cpp"
-		"src/mods/ManualFlashlight.cpp"
-		"src/mods/PluginLoader.cpp"
-		"src/mods/REFrameworkConfig.cpp"
-		"src/mods/Scene.cpp"
-		"src/mods/ScriptRunner.cpp"
-		"src/mods/VR.cpp"
-		"src/mods/bindings/FS.cpp"
-		"src/mods/bindings/ImGui.cpp"
-		"src/mods/bindings/Json.cpp"
-		"src/mods/bindings/Sdk.cpp"
-		"src/mods/tools/ChainViewer.cpp"
-		"src/mods/tools/GameObjectsDisplay.cpp"
-		"src/mods/tools/ObjectExplorer.cpp"
-		"src/mods/vr/Bindings.cpp"
-		"src/mods/vr/D3D11Component.cpp"
-		"src/mods/vr/D3D12Component.cpp"
-		"src/mods/vr/OverlayComponent.cpp"
-		"src/mods/vr/d3d12/ResourceCopier.cpp"
-		"src/mods/vr/d3d12/TextureContext.cpp"
-		"src/mods/vr/games/RE8VR.cpp"
-		"src/mods/vr/runtimes/OpenVR.cpp"
-		"src/mods/vr/runtimes/OpenXR.cpp"
-		"src/re2-imgui/imgui_impl_dx11.cpp"
-		"src/re2-imgui/imgui_impl_dx12.cpp"
-		"src/re2-imgui/imgui_impl_win32.cpp"
-		"src/utility/ImGui.cpp"
-		"src/D3D11Hook.hpp"
-		"src/D3D12Hook.hpp"
-		"src/DInputHook.hpp"
-		"src/ExceptionHandler.hpp"
-		"src/Genny.hpp"
-		"src/GennyIda.hpp"
-		"src/HookManager.hpp"
-		"src/LicenseStrings.hpp"
-		"src/Mod.hpp"
-		"src/Mods.hpp"
-		"src/REFramework.hpp"
-		"src/Tool.hpp"
-		"src/WindowFilter.hpp"
-		"src/WindowsMessageHook.hpp"
-		"src/mods/APIProxy.hpp"
-		"src/mods/Camera.hpp"
-		"src/mods/DeveloperTools.hpp"
-		"src/mods/FirstPerson.hpp"
-		"src/mods/FreeCam.hpp"
-		"src/mods/Graphics.hpp"
-		"src/mods/Hooks.hpp"
-		"src/mods/IntegrityCheckBypass.hpp"
-		"src/mods/ManualFlashlight.hpp"
-		"src/mods/PluginLoader.hpp"
-		"src/mods/REFrameworkConfig.hpp"
-		"src/mods/Scene.hpp"
-		"src/mods/ScriptRunner.hpp"
-		"src/mods/VR.hpp"
-		"src/mods/bindings/FS.hpp"
-		"src/mods/bindings/ImGui.hpp"
-		"src/mods/bindings/Json.hpp"
-		"src/mods/bindings/Sdk.hpp"
-		"src/mods/tools/ChainViewer.hpp"
-		"src/mods/tools/GameObjectsDisplay.hpp"
-		"src/mods/tools/ObjectExplorer.hpp"
-		"src/mods/vr/D3D11Component.hpp"
-		"src/mods/vr/D3D12Component.hpp"
-		"src/mods/vr/OverlayComponent.hpp"
-		"src/mods/vr/d3d12/ComPtr.hpp"
-		"src/mods/vr/d3d12/ResourceCopier.hpp"
-		"src/mods/vr/d3d12/TextureContext.hpp"
-		"src/mods/vr/games/RE8VR.hpp"
-		"src/mods/vr/runtimes/OpenVR.hpp"
-		"src/mods/vr/runtimes/OpenXR.hpp"
-		"src/mods/vr/runtimes/VRRuntime.hpp"
-		"src/re2-imgui/af_baidu.hpp"
-		"src/re2-imgui/af_faprolight.hpp"
-		"src/re2-imgui/font_robotomedium.hpp"
-		"src/re2-imgui/re2_imconfig.hpp"
-		"src/utility/ImGui.hpp"
-		"src/re2-imgui/af_fadef.h"
-		"src/re2-imgui/imgui_impl_dx11.h"
-		"src/re2-imgui/imgui_impl_dx12.h"
-		"src/re2-imgui/imgui_impl_win32.h"
-	)
-
-	list(APPEND RE7_SOURCES
-		cmake.toml
-	)
-
-	set(CMKR_SOURCES ${RE7_SOURCES})
-	add_library(RE7 SHARED)
-
-	if(RE7_SOURCES)
-		target_sources(RE7 PRIVATE ${RE7_SOURCES})
-	endif()
-
-	target_compile_definitions(RE7 PUBLIC
-		${CMKR_TARGET}
-		REFRAMEWORK_EXPORTS
-		"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
-	)
-
-	if(DEVELOPER_MODE) # developer-mode
-		target_compile_definitions(RE7 PUBLIC
-			DEVELOPER
+		list(APPEND RE7_SOURCES
+			"src/D3D11Hook.cpp"
+			"src/D3D12Hook.cpp"
+			"src/DInputHook.cpp"
+			"src/ExceptionHandler.cpp"
+			"src/HookManager.cpp"
+			"src/Main.cpp"
+			"src/Mods.cpp"
+			"src/REFramework.cpp"
+			"src/WindowsMessageHook.cpp"
+			"src/mods/APIProxy.cpp"
+			"src/mods/Camera.cpp"
+			"src/mods/DeveloperTools.cpp"
+			"src/mods/FirstPerson.cpp"
+			"src/mods/FreeCam.cpp"
+			"src/mods/Graphics.cpp"
+			"src/mods/Hooks.cpp"
+			"src/mods/IntegrityCheckBypass.cpp"
+			"src/mods/ManualFlashlight.cpp"
+			"src/mods/PluginLoader.cpp"
+			"src/mods/REFrameworkConfig.cpp"
+			"src/mods/Scene.cpp"
+			"src/mods/ScriptRunner.cpp"
+			"src/mods/VR.cpp"
+			"src/mods/bindings/FS.cpp"
+			"src/mods/bindings/ImGui.cpp"
+			"src/mods/bindings/Json.cpp"
+			"src/mods/bindings/Sdk.cpp"
+			"src/mods/tools/ChainViewer.cpp"
+			"src/mods/tools/GameObjectsDisplay.cpp"
+			"src/mods/tools/ObjectExplorer.cpp"
+			"src/mods/vr/Bindings.cpp"
+			"src/mods/vr/D3D11Component.cpp"
+			"src/mods/vr/D3D12Component.cpp"
+			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/ResourceCopier.cpp"
+			"src/mods/vr/d3d12/TextureContext.cpp"
+			"src/mods/vr/games/RE8VR.cpp"
+			"src/mods/vr/runtimes/OpenVR.cpp"
+			"src/mods/vr/runtimes/OpenXR.cpp"
+			"src/re2-imgui/imgui_impl_dx11.cpp"
+			"src/re2-imgui/imgui_impl_dx12.cpp"
+			"src/re2-imgui/imgui_impl_win32.cpp"
+			"src/utility/ImGui.cpp"
+			"src/D3D11Hook.hpp"
+			"src/D3D12Hook.hpp"
+			"src/DInputHook.hpp"
+			"src/ExceptionHandler.hpp"
+			"src/Genny.hpp"
+			"src/GennyIda.hpp"
+			"src/HookManager.hpp"
+			"src/LicenseStrings.hpp"
+			"src/Mod.hpp"
+			"src/Mods.hpp"
+			"src/REFramework.hpp"
+			"src/Tool.hpp"
+			"src/WindowFilter.hpp"
+			"src/WindowsMessageHook.hpp"
+			"src/mods/APIProxy.hpp"
+			"src/mods/Camera.hpp"
+			"src/mods/DeveloperTools.hpp"
+			"src/mods/FirstPerson.hpp"
+			"src/mods/FreeCam.hpp"
+			"src/mods/Graphics.hpp"
+			"src/mods/Hooks.hpp"
+			"src/mods/IntegrityCheckBypass.hpp"
+			"src/mods/ManualFlashlight.hpp"
+			"src/mods/PluginLoader.hpp"
+			"src/mods/REFrameworkConfig.hpp"
+			"src/mods/Scene.hpp"
+			"src/mods/ScriptRunner.hpp"
+			"src/mods/VR.hpp"
+			"src/mods/bindings/FS.hpp"
+			"src/mods/bindings/ImGui.hpp"
+			"src/mods/bindings/Json.hpp"
+			"src/mods/bindings/Sdk.hpp"
+			"src/mods/tools/ChainViewer.hpp"
+			"src/mods/tools/GameObjectsDisplay.hpp"
+			"src/mods/tools/ObjectExplorer.hpp"
+			"src/mods/vr/D3D11Component.hpp"
+			"src/mods/vr/D3D12Component.hpp"
+			"src/mods/vr/OverlayComponent.hpp"
+			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/ResourceCopier.hpp"
+			"src/mods/vr/d3d12/TextureContext.hpp"
+			"src/mods/vr/games/RE8VR.hpp"
+			"src/mods/vr/runtimes/OpenVR.hpp"
+			"src/mods/vr/runtimes/OpenXR.hpp"
+			"src/mods/vr/runtimes/VRRuntime.hpp"
+			"src/re2-imgui/af_baidu.hpp"
+			"src/re2-imgui/af_faprolight.hpp"
+			"src/re2-imgui/font_robotomedium.hpp"
+			"src/re2-imgui/re2_imconfig.hpp"
+			"src/utility/ImGui.hpp"
+			"src/re2-imgui/af_fadef.h"
+			"src/re2-imgui/imgui_impl_dx11.h"
+			"src/re2-imgui/imgui_impl_dx12.h"
+			"src/re2-imgui/imgui_impl_win32.h"
 		)
+
+		list(APPEND RE7_SOURCES
+			cmake.toml
+		)
+
+		set(CMKR_SOURCES ${RE7_SOURCES})
+		add_library(RE7 SHARED)
+
+		if(RE7_SOURCES)
+			target_sources(RE7 PRIVATE ${RE7_SOURCES})
+		endif()
+
+		target_compile_definitions(RE7 PUBLIC
+			${CMKR_TARGET}
+			REFRAMEWORK_EXPORTS
+			"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
+		)
+
+		if(DEVELOPER_MODE) # developer-mode
+			target_compile_definitions(RE7 PUBLIC
+				DEVELOPER
+			)
+		endif()
+
+		target_compile_features(RE7 PUBLIC
+			cxx_std_20
+		)
+
+		target_compile_options(RE7 PUBLIC
+			"/GS-"
+			"/bigobj"
+			"/EHa"
+		)
+
+		target_include_directories(RE7 PUBLIC
+			"shared/"
+			"src/"
+			"include/"
+			"${OPENXR_SOURCE_DIR}/src"
+		)
+
+		target_link_directories(RE7 PUBLIC
+			"dependencies/openvr/lib/win64/"
+		)
+
+		target_link_libraries(RE7 PUBLIC
+			${CMKR_TARGET}SDK
+			utility
+			asmjit::asmjit
+			nlohmann_json
+			spdlog
+			lua
+			sol2
+			imgui
+			imguizmo
+			imnodes
+			minhook
+			d3d11
+			glm_static
+			shlwapi
+			openvr
+			openxr_loader
+			delayimp
+			DirectXTK
+			DirectXTK12
+		)
+
+		set_target_properties(RE7 PROPERTIES
+			OUTPUT_NAME
+				dinput8
+			LINK_FLAGS
+				"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	target_compile_features(RE7 PUBLIC
-		cxx_std_20
-	)
-
-	target_compile_options(RE7 PUBLIC
-		"/GS-"
-		"/bigobj"
-		"/EHa"
-	)
-
-	target_include_directories(RE7 PUBLIC
-		"shared/"
-		"src/"
-		"include/"
-		"${OPENXR_SOURCE_DIR}/src"
-	)
-
-	target_link_directories(RE7 PUBLIC
-		"dependencies/openvr/lib/win64/"
-	)
-
-	target_link_libraries(RE7 PUBLIC
-		${CMKR_TARGET}SDK
-		utility
-		asmjit::asmjit
-		nlohmann_json
-		spdlog
-		lua
-		sol2
-		imgui
-		imguizmo
-		imnodes
-		minhook
-		d3d11
-		glm_static
-		shlwapi
-		openvr
-		openxr_loader
-		delayimp
-		DirectXTK
-		DirectXTK12
-	)
-
-	set_target_properties(RE7 PROPERTIES
-		OUTPUT_NAME
-			dinput8
-		LINK_FLAGS
-			"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target RE7_TDB49
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET RE7_TDB49)
-	set(RE7_TDB49_SOURCES "")
+	if(REF_BUILD_RE7_TDB49) # build-re7tdb49
+		set(CMKR_TARGET RE7_TDB49)
+		set(RE7_TDB49_SOURCES "")
 
-	list(APPEND RE7_TDB49_SOURCES
-		"src/D3D11Hook.cpp"
-		"src/D3D12Hook.cpp"
-		"src/DInputHook.cpp"
-		"src/ExceptionHandler.cpp"
-		"src/HookManager.cpp"
-		"src/Main.cpp"
-		"src/Mods.cpp"
-		"src/REFramework.cpp"
-		"src/WindowsMessageHook.cpp"
-		"src/mods/APIProxy.cpp"
-		"src/mods/Camera.cpp"
-		"src/mods/DeveloperTools.cpp"
-		"src/mods/FirstPerson.cpp"
-		"src/mods/FreeCam.cpp"
-		"src/mods/Graphics.cpp"
-		"src/mods/Hooks.cpp"
-		"src/mods/IntegrityCheckBypass.cpp"
-		"src/mods/ManualFlashlight.cpp"
-		"src/mods/PluginLoader.cpp"
-		"src/mods/REFrameworkConfig.cpp"
-		"src/mods/Scene.cpp"
-		"src/mods/ScriptRunner.cpp"
-		"src/mods/VR.cpp"
-		"src/mods/bindings/FS.cpp"
-		"src/mods/bindings/ImGui.cpp"
-		"src/mods/bindings/Json.cpp"
-		"src/mods/bindings/Sdk.cpp"
-		"src/mods/tools/ChainViewer.cpp"
-		"src/mods/tools/GameObjectsDisplay.cpp"
-		"src/mods/tools/ObjectExplorer.cpp"
-		"src/mods/vr/Bindings.cpp"
-		"src/mods/vr/D3D11Component.cpp"
-		"src/mods/vr/D3D12Component.cpp"
-		"src/mods/vr/OverlayComponent.cpp"
-		"src/mods/vr/d3d12/ResourceCopier.cpp"
-		"src/mods/vr/d3d12/TextureContext.cpp"
-		"src/mods/vr/games/RE8VR.cpp"
-		"src/mods/vr/runtimes/OpenVR.cpp"
-		"src/mods/vr/runtimes/OpenXR.cpp"
-		"src/re2-imgui/imgui_impl_dx11.cpp"
-		"src/re2-imgui/imgui_impl_dx12.cpp"
-		"src/re2-imgui/imgui_impl_win32.cpp"
-		"src/utility/ImGui.cpp"
-		"src/D3D11Hook.hpp"
-		"src/D3D12Hook.hpp"
-		"src/DInputHook.hpp"
-		"src/ExceptionHandler.hpp"
-		"src/Genny.hpp"
-		"src/GennyIda.hpp"
-		"src/HookManager.hpp"
-		"src/LicenseStrings.hpp"
-		"src/Mod.hpp"
-		"src/Mods.hpp"
-		"src/REFramework.hpp"
-		"src/Tool.hpp"
-		"src/WindowFilter.hpp"
-		"src/WindowsMessageHook.hpp"
-		"src/mods/APIProxy.hpp"
-		"src/mods/Camera.hpp"
-		"src/mods/DeveloperTools.hpp"
-		"src/mods/FirstPerson.hpp"
-		"src/mods/FreeCam.hpp"
-		"src/mods/Graphics.hpp"
-		"src/mods/Hooks.hpp"
-		"src/mods/IntegrityCheckBypass.hpp"
-		"src/mods/ManualFlashlight.hpp"
-		"src/mods/PluginLoader.hpp"
-		"src/mods/REFrameworkConfig.hpp"
-		"src/mods/Scene.hpp"
-		"src/mods/ScriptRunner.hpp"
-		"src/mods/VR.hpp"
-		"src/mods/bindings/FS.hpp"
-		"src/mods/bindings/ImGui.hpp"
-		"src/mods/bindings/Json.hpp"
-		"src/mods/bindings/Sdk.hpp"
-		"src/mods/tools/ChainViewer.hpp"
-		"src/mods/tools/GameObjectsDisplay.hpp"
-		"src/mods/tools/ObjectExplorer.hpp"
-		"src/mods/vr/D3D11Component.hpp"
-		"src/mods/vr/D3D12Component.hpp"
-		"src/mods/vr/OverlayComponent.hpp"
-		"src/mods/vr/d3d12/ComPtr.hpp"
-		"src/mods/vr/d3d12/ResourceCopier.hpp"
-		"src/mods/vr/d3d12/TextureContext.hpp"
-		"src/mods/vr/games/RE8VR.hpp"
-		"src/mods/vr/runtimes/OpenVR.hpp"
-		"src/mods/vr/runtimes/OpenXR.hpp"
-		"src/mods/vr/runtimes/VRRuntime.hpp"
-		"src/re2-imgui/af_baidu.hpp"
-		"src/re2-imgui/af_faprolight.hpp"
-		"src/re2-imgui/font_robotomedium.hpp"
-		"src/re2-imgui/re2_imconfig.hpp"
-		"src/utility/ImGui.hpp"
-		"src/re2-imgui/af_fadef.h"
-		"src/re2-imgui/imgui_impl_dx11.h"
-		"src/re2-imgui/imgui_impl_dx12.h"
-		"src/re2-imgui/imgui_impl_win32.h"
-	)
-
-	list(APPEND RE7_TDB49_SOURCES
-		cmake.toml
-	)
-
-	set(CMKR_SOURCES ${RE7_TDB49_SOURCES})
-	add_library(RE7_TDB49 SHARED)
-
-	if(RE7_TDB49_SOURCES)
-		target_sources(RE7_TDB49 PRIVATE ${RE7_TDB49_SOURCES})
-	endif()
-
-	target_compile_definitions(RE7_TDB49 PUBLIC
-		${CMKR_TARGET}
-		REFRAMEWORK_EXPORTS
-		"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
-	)
-
-	if(DEVELOPER_MODE) # developer-mode
-		target_compile_definitions(RE7_TDB49 PUBLIC
-			DEVELOPER
+		list(APPEND RE7_TDB49_SOURCES
+			"src/D3D11Hook.cpp"
+			"src/D3D12Hook.cpp"
+			"src/DInputHook.cpp"
+			"src/ExceptionHandler.cpp"
+			"src/HookManager.cpp"
+			"src/Main.cpp"
+			"src/Mods.cpp"
+			"src/REFramework.cpp"
+			"src/WindowsMessageHook.cpp"
+			"src/mods/APIProxy.cpp"
+			"src/mods/Camera.cpp"
+			"src/mods/DeveloperTools.cpp"
+			"src/mods/FirstPerson.cpp"
+			"src/mods/FreeCam.cpp"
+			"src/mods/Graphics.cpp"
+			"src/mods/Hooks.cpp"
+			"src/mods/IntegrityCheckBypass.cpp"
+			"src/mods/ManualFlashlight.cpp"
+			"src/mods/PluginLoader.cpp"
+			"src/mods/REFrameworkConfig.cpp"
+			"src/mods/Scene.cpp"
+			"src/mods/ScriptRunner.cpp"
+			"src/mods/VR.cpp"
+			"src/mods/bindings/FS.cpp"
+			"src/mods/bindings/ImGui.cpp"
+			"src/mods/bindings/Json.cpp"
+			"src/mods/bindings/Sdk.cpp"
+			"src/mods/tools/ChainViewer.cpp"
+			"src/mods/tools/GameObjectsDisplay.cpp"
+			"src/mods/tools/ObjectExplorer.cpp"
+			"src/mods/vr/Bindings.cpp"
+			"src/mods/vr/D3D11Component.cpp"
+			"src/mods/vr/D3D12Component.cpp"
+			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/ResourceCopier.cpp"
+			"src/mods/vr/d3d12/TextureContext.cpp"
+			"src/mods/vr/games/RE8VR.cpp"
+			"src/mods/vr/runtimes/OpenVR.cpp"
+			"src/mods/vr/runtimes/OpenXR.cpp"
+			"src/re2-imgui/imgui_impl_dx11.cpp"
+			"src/re2-imgui/imgui_impl_dx12.cpp"
+			"src/re2-imgui/imgui_impl_win32.cpp"
+			"src/utility/ImGui.cpp"
+			"src/D3D11Hook.hpp"
+			"src/D3D12Hook.hpp"
+			"src/DInputHook.hpp"
+			"src/ExceptionHandler.hpp"
+			"src/Genny.hpp"
+			"src/GennyIda.hpp"
+			"src/HookManager.hpp"
+			"src/LicenseStrings.hpp"
+			"src/Mod.hpp"
+			"src/Mods.hpp"
+			"src/REFramework.hpp"
+			"src/Tool.hpp"
+			"src/WindowFilter.hpp"
+			"src/WindowsMessageHook.hpp"
+			"src/mods/APIProxy.hpp"
+			"src/mods/Camera.hpp"
+			"src/mods/DeveloperTools.hpp"
+			"src/mods/FirstPerson.hpp"
+			"src/mods/FreeCam.hpp"
+			"src/mods/Graphics.hpp"
+			"src/mods/Hooks.hpp"
+			"src/mods/IntegrityCheckBypass.hpp"
+			"src/mods/ManualFlashlight.hpp"
+			"src/mods/PluginLoader.hpp"
+			"src/mods/REFrameworkConfig.hpp"
+			"src/mods/Scene.hpp"
+			"src/mods/ScriptRunner.hpp"
+			"src/mods/VR.hpp"
+			"src/mods/bindings/FS.hpp"
+			"src/mods/bindings/ImGui.hpp"
+			"src/mods/bindings/Json.hpp"
+			"src/mods/bindings/Sdk.hpp"
+			"src/mods/tools/ChainViewer.hpp"
+			"src/mods/tools/GameObjectsDisplay.hpp"
+			"src/mods/tools/ObjectExplorer.hpp"
+			"src/mods/vr/D3D11Component.hpp"
+			"src/mods/vr/D3D12Component.hpp"
+			"src/mods/vr/OverlayComponent.hpp"
+			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/ResourceCopier.hpp"
+			"src/mods/vr/d3d12/TextureContext.hpp"
+			"src/mods/vr/games/RE8VR.hpp"
+			"src/mods/vr/runtimes/OpenVR.hpp"
+			"src/mods/vr/runtimes/OpenXR.hpp"
+			"src/mods/vr/runtimes/VRRuntime.hpp"
+			"src/re2-imgui/af_baidu.hpp"
+			"src/re2-imgui/af_faprolight.hpp"
+			"src/re2-imgui/font_robotomedium.hpp"
+			"src/re2-imgui/re2_imconfig.hpp"
+			"src/utility/ImGui.hpp"
+			"src/re2-imgui/af_fadef.h"
+			"src/re2-imgui/imgui_impl_dx11.h"
+			"src/re2-imgui/imgui_impl_dx12.h"
+			"src/re2-imgui/imgui_impl_win32.h"
 		)
+
+		list(APPEND RE7_TDB49_SOURCES
+			cmake.toml
+		)
+
+		set(CMKR_SOURCES ${RE7_TDB49_SOURCES})
+		add_library(RE7_TDB49 SHARED)
+
+		if(RE7_TDB49_SOURCES)
+			target_sources(RE7_TDB49 PRIVATE ${RE7_TDB49_SOURCES})
+		endif()
+
+		target_compile_definitions(RE7_TDB49 PUBLIC
+			${CMKR_TARGET}
+			REFRAMEWORK_EXPORTS
+			"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
+		)
+
+		if(DEVELOPER_MODE) # developer-mode
+			target_compile_definitions(RE7_TDB49 PUBLIC
+				DEVELOPER
+			)
+		endif()
+
+		target_compile_features(RE7_TDB49 PUBLIC
+			cxx_std_20
+		)
+
+		target_compile_options(RE7_TDB49 PUBLIC
+			"/GS-"
+			"/bigobj"
+			"/EHa"
+		)
+
+		target_include_directories(RE7_TDB49 PUBLIC
+			"shared/"
+			"src/"
+			"include/"
+			"${OPENXR_SOURCE_DIR}/src"
+		)
+
+		target_link_directories(RE7_TDB49 PUBLIC
+			"dependencies/openvr/lib/win64/"
+		)
+
+		target_link_libraries(RE7_TDB49 PUBLIC
+			${CMKR_TARGET}SDK
+			utility
+			asmjit::asmjit
+			nlohmann_json
+			spdlog
+			lua
+			sol2
+			imgui
+			imguizmo
+			imnodes
+			minhook
+			d3d11
+			glm_static
+			shlwapi
+			openvr
+			openxr_loader
+			delayimp
+			DirectXTK
+			DirectXTK12
+		)
+
+		set_target_properties(RE7_TDB49 PROPERTIES
+			OUTPUT_NAME
+				dinput8
+			LINK_FLAGS
+				"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	target_compile_features(RE7_TDB49 PUBLIC
-		cxx_std_20
-	)
-
-	target_compile_options(RE7_TDB49 PUBLIC
-		"/GS-"
-		"/bigobj"
-		"/EHa"
-	)
-
-	target_include_directories(RE7_TDB49 PUBLIC
-		"shared/"
-		"src/"
-		"include/"
-		"${OPENXR_SOURCE_DIR}/src"
-	)
-
-	target_link_directories(RE7_TDB49 PUBLIC
-		"dependencies/openvr/lib/win64/"
-	)
-
-	target_link_libraries(RE7_TDB49 PUBLIC
-		${CMKR_TARGET}SDK
-		utility
-		asmjit::asmjit
-		nlohmann_json
-		spdlog
-		lua
-		sol2
-		imgui
-		imguizmo
-		imnodes
-		minhook
-		d3d11
-		glm_static
-		shlwapi
-		openvr
-		openxr_loader
-		delayimp
-		DirectXTK
-		DirectXTK12
-	)
-
-	set_target_properties(RE7_TDB49 PROPERTIES
-		OUTPUT_NAME
-			dinput8
-		LINK_FLAGS
-			"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target RE8SDK
-if(REF_BUILD_RE8_SDK OR REF_BUILD_FRAMEWORK) # build-re8-sdk
+if(REF_BUILD_RE8_SDK AND REF_BUILD_FRAMEWORK) # build-re8-sdk
 	set(CMKR_TARGET RE8SDK)
 	set(RE8SDK_SOURCES "")
 
@@ -6762,200 +6788,202 @@ endif()
 
 # Target RE8
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET RE8)
-	set(RE8_SOURCES "")
+	if(REF_BUILD_RE8) # build-re8
+		set(CMKR_TARGET RE8)
+		set(RE8_SOURCES "")
 
-	list(APPEND RE8_SOURCES
-		"src/D3D11Hook.cpp"
-		"src/D3D12Hook.cpp"
-		"src/DInputHook.cpp"
-		"src/ExceptionHandler.cpp"
-		"src/HookManager.cpp"
-		"src/Main.cpp"
-		"src/Mods.cpp"
-		"src/REFramework.cpp"
-		"src/WindowsMessageHook.cpp"
-		"src/mods/APIProxy.cpp"
-		"src/mods/Camera.cpp"
-		"src/mods/DeveloperTools.cpp"
-		"src/mods/FirstPerson.cpp"
-		"src/mods/FreeCam.cpp"
-		"src/mods/Graphics.cpp"
-		"src/mods/Hooks.cpp"
-		"src/mods/IntegrityCheckBypass.cpp"
-		"src/mods/ManualFlashlight.cpp"
-		"src/mods/PluginLoader.cpp"
-		"src/mods/REFrameworkConfig.cpp"
-		"src/mods/Scene.cpp"
-		"src/mods/ScriptRunner.cpp"
-		"src/mods/VR.cpp"
-		"src/mods/bindings/FS.cpp"
-		"src/mods/bindings/ImGui.cpp"
-		"src/mods/bindings/Json.cpp"
-		"src/mods/bindings/Sdk.cpp"
-		"src/mods/tools/ChainViewer.cpp"
-		"src/mods/tools/GameObjectsDisplay.cpp"
-		"src/mods/tools/ObjectExplorer.cpp"
-		"src/mods/vr/Bindings.cpp"
-		"src/mods/vr/D3D11Component.cpp"
-		"src/mods/vr/D3D12Component.cpp"
-		"src/mods/vr/OverlayComponent.cpp"
-		"src/mods/vr/d3d12/ResourceCopier.cpp"
-		"src/mods/vr/d3d12/TextureContext.cpp"
-		"src/mods/vr/games/RE8VR.cpp"
-		"src/mods/vr/runtimes/OpenVR.cpp"
-		"src/mods/vr/runtimes/OpenXR.cpp"
-		"src/re2-imgui/imgui_impl_dx11.cpp"
-		"src/re2-imgui/imgui_impl_dx12.cpp"
-		"src/re2-imgui/imgui_impl_win32.cpp"
-		"src/utility/ImGui.cpp"
-		"src/D3D11Hook.hpp"
-		"src/D3D12Hook.hpp"
-		"src/DInputHook.hpp"
-		"src/ExceptionHandler.hpp"
-		"src/Genny.hpp"
-		"src/GennyIda.hpp"
-		"src/HookManager.hpp"
-		"src/LicenseStrings.hpp"
-		"src/Mod.hpp"
-		"src/Mods.hpp"
-		"src/REFramework.hpp"
-		"src/Tool.hpp"
-		"src/WindowFilter.hpp"
-		"src/WindowsMessageHook.hpp"
-		"src/mods/APIProxy.hpp"
-		"src/mods/Camera.hpp"
-		"src/mods/DeveloperTools.hpp"
-		"src/mods/FirstPerson.hpp"
-		"src/mods/FreeCam.hpp"
-		"src/mods/Graphics.hpp"
-		"src/mods/Hooks.hpp"
-		"src/mods/IntegrityCheckBypass.hpp"
-		"src/mods/ManualFlashlight.hpp"
-		"src/mods/PluginLoader.hpp"
-		"src/mods/REFrameworkConfig.hpp"
-		"src/mods/Scene.hpp"
-		"src/mods/ScriptRunner.hpp"
-		"src/mods/VR.hpp"
-		"src/mods/bindings/FS.hpp"
-		"src/mods/bindings/ImGui.hpp"
-		"src/mods/bindings/Json.hpp"
-		"src/mods/bindings/Sdk.hpp"
-		"src/mods/tools/ChainViewer.hpp"
-		"src/mods/tools/GameObjectsDisplay.hpp"
-		"src/mods/tools/ObjectExplorer.hpp"
-		"src/mods/vr/D3D11Component.hpp"
-		"src/mods/vr/D3D12Component.hpp"
-		"src/mods/vr/OverlayComponent.hpp"
-		"src/mods/vr/d3d12/ComPtr.hpp"
-		"src/mods/vr/d3d12/ResourceCopier.hpp"
-		"src/mods/vr/d3d12/TextureContext.hpp"
-		"src/mods/vr/games/RE8VR.hpp"
-		"src/mods/vr/runtimes/OpenVR.hpp"
-		"src/mods/vr/runtimes/OpenXR.hpp"
-		"src/mods/vr/runtimes/VRRuntime.hpp"
-		"src/re2-imgui/af_baidu.hpp"
-		"src/re2-imgui/af_faprolight.hpp"
-		"src/re2-imgui/font_robotomedium.hpp"
-		"src/re2-imgui/re2_imconfig.hpp"
-		"src/utility/ImGui.hpp"
-		"src/re2-imgui/af_fadef.h"
-		"src/re2-imgui/imgui_impl_dx11.h"
-		"src/re2-imgui/imgui_impl_dx12.h"
-		"src/re2-imgui/imgui_impl_win32.h"
-	)
-
-	list(APPEND RE8_SOURCES
-		cmake.toml
-	)
-
-	set(CMKR_SOURCES ${RE8_SOURCES})
-	add_library(RE8 SHARED)
-
-	if(RE8_SOURCES)
-		target_sources(RE8 PRIVATE ${RE8_SOURCES})
-	endif()
-
-	target_compile_definitions(RE8 PUBLIC
-		${CMKR_TARGET}
-		REFRAMEWORK_EXPORTS
-		"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
-	)
-
-	if(DEVELOPER_MODE) # developer-mode
-		target_compile_definitions(RE8 PUBLIC
-			DEVELOPER
+		list(APPEND RE8_SOURCES
+			"src/D3D11Hook.cpp"
+			"src/D3D12Hook.cpp"
+			"src/DInputHook.cpp"
+			"src/ExceptionHandler.cpp"
+			"src/HookManager.cpp"
+			"src/Main.cpp"
+			"src/Mods.cpp"
+			"src/REFramework.cpp"
+			"src/WindowsMessageHook.cpp"
+			"src/mods/APIProxy.cpp"
+			"src/mods/Camera.cpp"
+			"src/mods/DeveloperTools.cpp"
+			"src/mods/FirstPerson.cpp"
+			"src/mods/FreeCam.cpp"
+			"src/mods/Graphics.cpp"
+			"src/mods/Hooks.cpp"
+			"src/mods/IntegrityCheckBypass.cpp"
+			"src/mods/ManualFlashlight.cpp"
+			"src/mods/PluginLoader.cpp"
+			"src/mods/REFrameworkConfig.cpp"
+			"src/mods/Scene.cpp"
+			"src/mods/ScriptRunner.cpp"
+			"src/mods/VR.cpp"
+			"src/mods/bindings/FS.cpp"
+			"src/mods/bindings/ImGui.cpp"
+			"src/mods/bindings/Json.cpp"
+			"src/mods/bindings/Sdk.cpp"
+			"src/mods/tools/ChainViewer.cpp"
+			"src/mods/tools/GameObjectsDisplay.cpp"
+			"src/mods/tools/ObjectExplorer.cpp"
+			"src/mods/vr/Bindings.cpp"
+			"src/mods/vr/D3D11Component.cpp"
+			"src/mods/vr/D3D12Component.cpp"
+			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/ResourceCopier.cpp"
+			"src/mods/vr/d3d12/TextureContext.cpp"
+			"src/mods/vr/games/RE8VR.cpp"
+			"src/mods/vr/runtimes/OpenVR.cpp"
+			"src/mods/vr/runtimes/OpenXR.cpp"
+			"src/re2-imgui/imgui_impl_dx11.cpp"
+			"src/re2-imgui/imgui_impl_dx12.cpp"
+			"src/re2-imgui/imgui_impl_win32.cpp"
+			"src/utility/ImGui.cpp"
+			"src/D3D11Hook.hpp"
+			"src/D3D12Hook.hpp"
+			"src/DInputHook.hpp"
+			"src/ExceptionHandler.hpp"
+			"src/Genny.hpp"
+			"src/GennyIda.hpp"
+			"src/HookManager.hpp"
+			"src/LicenseStrings.hpp"
+			"src/Mod.hpp"
+			"src/Mods.hpp"
+			"src/REFramework.hpp"
+			"src/Tool.hpp"
+			"src/WindowFilter.hpp"
+			"src/WindowsMessageHook.hpp"
+			"src/mods/APIProxy.hpp"
+			"src/mods/Camera.hpp"
+			"src/mods/DeveloperTools.hpp"
+			"src/mods/FirstPerson.hpp"
+			"src/mods/FreeCam.hpp"
+			"src/mods/Graphics.hpp"
+			"src/mods/Hooks.hpp"
+			"src/mods/IntegrityCheckBypass.hpp"
+			"src/mods/ManualFlashlight.hpp"
+			"src/mods/PluginLoader.hpp"
+			"src/mods/REFrameworkConfig.hpp"
+			"src/mods/Scene.hpp"
+			"src/mods/ScriptRunner.hpp"
+			"src/mods/VR.hpp"
+			"src/mods/bindings/FS.hpp"
+			"src/mods/bindings/ImGui.hpp"
+			"src/mods/bindings/Json.hpp"
+			"src/mods/bindings/Sdk.hpp"
+			"src/mods/tools/ChainViewer.hpp"
+			"src/mods/tools/GameObjectsDisplay.hpp"
+			"src/mods/tools/ObjectExplorer.hpp"
+			"src/mods/vr/D3D11Component.hpp"
+			"src/mods/vr/D3D12Component.hpp"
+			"src/mods/vr/OverlayComponent.hpp"
+			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/ResourceCopier.hpp"
+			"src/mods/vr/d3d12/TextureContext.hpp"
+			"src/mods/vr/games/RE8VR.hpp"
+			"src/mods/vr/runtimes/OpenVR.hpp"
+			"src/mods/vr/runtimes/OpenXR.hpp"
+			"src/mods/vr/runtimes/VRRuntime.hpp"
+			"src/re2-imgui/af_baidu.hpp"
+			"src/re2-imgui/af_faprolight.hpp"
+			"src/re2-imgui/font_robotomedium.hpp"
+			"src/re2-imgui/re2_imconfig.hpp"
+			"src/utility/ImGui.hpp"
+			"src/re2-imgui/af_fadef.h"
+			"src/re2-imgui/imgui_impl_dx11.h"
+			"src/re2-imgui/imgui_impl_dx12.h"
+			"src/re2-imgui/imgui_impl_win32.h"
 		)
+
+		list(APPEND RE8_SOURCES
+			cmake.toml
+		)
+
+		set(CMKR_SOURCES ${RE8_SOURCES})
+		add_library(RE8 SHARED)
+
+		if(RE8_SOURCES)
+			target_sources(RE8 PRIVATE ${RE8_SOURCES})
+		endif()
+
+		target_compile_definitions(RE8 PUBLIC
+			${CMKR_TARGET}
+			REFRAMEWORK_EXPORTS
+			"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
+		)
+
+		if(DEVELOPER_MODE) # developer-mode
+			target_compile_definitions(RE8 PUBLIC
+				DEVELOPER
+			)
+		endif()
+
+		target_compile_features(RE8 PUBLIC
+			cxx_std_20
+		)
+
+		target_compile_options(RE8 PUBLIC
+			"/GS-"
+			"/bigobj"
+			"/EHa"
+		)
+
+		target_include_directories(RE8 PUBLIC
+			"shared/"
+			"src/"
+			"include/"
+			"${OPENXR_SOURCE_DIR}/src"
+		)
+
+		target_link_directories(RE8 PUBLIC
+			"dependencies/openvr/lib/win64/"
+		)
+
+		target_link_libraries(RE8 PUBLIC
+			${CMKR_TARGET}SDK
+			utility
+			asmjit::asmjit
+			nlohmann_json
+			spdlog
+			lua
+			sol2
+			imgui
+			imguizmo
+			imnodes
+			minhook
+			d3d11
+			glm_static
+			shlwapi
+			openvr
+			openxr_loader
+			delayimp
+			DirectXTK
+			DirectXTK12
+		)
+
+		set_target_properties(RE8 PROPERTIES
+			OUTPUT_NAME
+				dinput8
+			LINK_FLAGS
+				"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	target_compile_features(RE8 PUBLIC
-		cxx_std_20
-	)
-
-	target_compile_options(RE8 PUBLIC
-		"/GS-"
-		"/bigobj"
-		"/EHa"
-	)
-
-	target_include_directories(RE8 PUBLIC
-		"shared/"
-		"src/"
-		"include/"
-		"${OPENXR_SOURCE_DIR}/src"
-	)
-
-	target_link_directories(RE8 PUBLIC
-		"dependencies/openvr/lib/win64/"
-	)
-
-	target_link_libraries(RE8 PUBLIC
-		${CMKR_TARGET}SDK
-		utility
-		asmjit::asmjit
-		nlohmann_json
-		spdlog
-		lua
-		sol2
-		imgui
-		imguizmo
-		imnodes
-		minhook
-		d3d11
-		glm_static
-		shlwapi
-		openvr
-		openxr_loader
-		delayimp
-		DirectXTK
-		DirectXTK12
-	)
-
-	set_target_properties(RE8 PROPERTIES
-		OUTPUT_NAME
-			dinput8
-		LINK_FLAGS
-			"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target DMC5SDK
-if(REF_BUILD_DMC5_SDK OR REF_BUILD_FRAMEWORK) # build-dmc5-sdk
+if(REF_BUILD_DMC5_SDK AND REF_BUILD_FRAMEWORK) # build-dmc5-sdk
 	set(CMKR_TARGET DMC5SDK)
 	set(DMC5SDK_SOURCES "")
 
@@ -7565,200 +7593,202 @@ endif()
 
 # Target DMC5
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET DMC5)
-	set(DMC5_SOURCES "")
+	if(REF_BUILD_DMC5) # build-dmc5
+		set(CMKR_TARGET DMC5)
+		set(DMC5_SOURCES "")
 
-	list(APPEND DMC5_SOURCES
-		"src/D3D11Hook.cpp"
-		"src/D3D12Hook.cpp"
-		"src/DInputHook.cpp"
-		"src/ExceptionHandler.cpp"
-		"src/HookManager.cpp"
-		"src/Main.cpp"
-		"src/Mods.cpp"
-		"src/REFramework.cpp"
-		"src/WindowsMessageHook.cpp"
-		"src/mods/APIProxy.cpp"
-		"src/mods/Camera.cpp"
-		"src/mods/DeveloperTools.cpp"
-		"src/mods/FirstPerson.cpp"
-		"src/mods/FreeCam.cpp"
-		"src/mods/Graphics.cpp"
-		"src/mods/Hooks.cpp"
-		"src/mods/IntegrityCheckBypass.cpp"
-		"src/mods/ManualFlashlight.cpp"
-		"src/mods/PluginLoader.cpp"
-		"src/mods/REFrameworkConfig.cpp"
-		"src/mods/Scene.cpp"
-		"src/mods/ScriptRunner.cpp"
-		"src/mods/VR.cpp"
-		"src/mods/bindings/FS.cpp"
-		"src/mods/bindings/ImGui.cpp"
-		"src/mods/bindings/Json.cpp"
-		"src/mods/bindings/Sdk.cpp"
-		"src/mods/tools/ChainViewer.cpp"
-		"src/mods/tools/GameObjectsDisplay.cpp"
-		"src/mods/tools/ObjectExplorer.cpp"
-		"src/mods/vr/Bindings.cpp"
-		"src/mods/vr/D3D11Component.cpp"
-		"src/mods/vr/D3D12Component.cpp"
-		"src/mods/vr/OverlayComponent.cpp"
-		"src/mods/vr/d3d12/ResourceCopier.cpp"
-		"src/mods/vr/d3d12/TextureContext.cpp"
-		"src/mods/vr/games/RE8VR.cpp"
-		"src/mods/vr/runtimes/OpenVR.cpp"
-		"src/mods/vr/runtimes/OpenXR.cpp"
-		"src/re2-imgui/imgui_impl_dx11.cpp"
-		"src/re2-imgui/imgui_impl_dx12.cpp"
-		"src/re2-imgui/imgui_impl_win32.cpp"
-		"src/utility/ImGui.cpp"
-		"src/D3D11Hook.hpp"
-		"src/D3D12Hook.hpp"
-		"src/DInputHook.hpp"
-		"src/ExceptionHandler.hpp"
-		"src/Genny.hpp"
-		"src/GennyIda.hpp"
-		"src/HookManager.hpp"
-		"src/LicenseStrings.hpp"
-		"src/Mod.hpp"
-		"src/Mods.hpp"
-		"src/REFramework.hpp"
-		"src/Tool.hpp"
-		"src/WindowFilter.hpp"
-		"src/WindowsMessageHook.hpp"
-		"src/mods/APIProxy.hpp"
-		"src/mods/Camera.hpp"
-		"src/mods/DeveloperTools.hpp"
-		"src/mods/FirstPerson.hpp"
-		"src/mods/FreeCam.hpp"
-		"src/mods/Graphics.hpp"
-		"src/mods/Hooks.hpp"
-		"src/mods/IntegrityCheckBypass.hpp"
-		"src/mods/ManualFlashlight.hpp"
-		"src/mods/PluginLoader.hpp"
-		"src/mods/REFrameworkConfig.hpp"
-		"src/mods/Scene.hpp"
-		"src/mods/ScriptRunner.hpp"
-		"src/mods/VR.hpp"
-		"src/mods/bindings/FS.hpp"
-		"src/mods/bindings/ImGui.hpp"
-		"src/mods/bindings/Json.hpp"
-		"src/mods/bindings/Sdk.hpp"
-		"src/mods/tools/ChainViewer.hpp"
-		"src/mods/tools/GameObjectsDisplay.hpp"
-		"src/mods/tools/ObjectExplorer.hpp"
-		"src/mods/vr/D3D11Component.hpp"
-		"src/mods/vr/D3D12Component.hpp"
-		"src/mods/vr/OverlayComponent.hpp"
-		"src/mods/vr/d3d12/ComPtr.hpp"
-		"src/mods/vr/d3d12/ResourceCopier.hpp"
-		"src/mods/vr/d3d12/TextureContext.hpp"
-		"src/mods/vr/games/RE8VR.hpp"
-		"src/mods/vr/runtimes/OpenVR.hpp"
-		"src/mods/vr/runtimes/OpenXR.hpp"
-		"src/mods/vr/runtimes/VRRuntime.hpp"
-		"src/re2-imgui/af_baidu.hpp"
-		"src/re2-imgui/af_faprolight.hpp"
-		"src/re2-imgui/font_robotomedium.hpp"
-		"src/re2-imgui/re2_imconfig.hpp"
-		"src/utility/ImGui.hpp"
-		"src/re2-imgui/af_fadef.h"
-		"src/re2-imgui/imgui_impl_dx11.h"
-		"src/re2-imgui/imgui_impl_dx12.h"
-		"src/re2-imgui/imgui_impl_win32.h"
-	)
-
-	list(APPEND DMC5_SOURCES
-		cmake.toml
-	)
-
-	set(CMKR_SOURCES ${DMC5_SOURCES})
-	add_library(DMC5 SHARED)
-
-	if(DMC5_SOURCES)
-		target_sources(DMC5 PRIVATE ${DMC5_SOURCES})
-	endif()
-
-	target_compile_definitions(DMC5 PUBLIC
-		${CMKR_TARGET}
-		REFRAMEWORK_EXPORTS
-		"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
-	)
-
-	if(DEVELOPER_MODE) # developer-mode
-		target_compile_definitions(DMC5 PUBLIC
-			DEVELOPER
+		list(APPEND DMC5_SOURCES
+			"src/D3D11Hook.cpp"
+			"src/D3D12Hook.cpp"
+			"src/DInputHook.cpp"
+			"src/ExceptionHandler.cpp"
+			"src/HookManager.cpp"
+			"src/Main.cpp"
+			"src/Mods.cpp"
+			"src/REFramework.cpp"
+			"src/WindowsMessageHook.cpp"
+			"src/mods/APIProxy.cpp"
+			"src/mods/Camera.cpp"
+			"src/mods/DeveloperTools.cpp"
+			"src/mods/FirstPerson.cpp"
+			"src/mods/FreeCam.cpp"
+			"src/mods/Graphics.cpp"
+			"src/mods/Hooks.cpp"
+			"src/mods/IntegrityCheckBypass.cpp"
+			"src/mods/ManualFlashlight.cpp"
+			"src/mods/PluginLoader.cpp"
+			"src/mods/REFrameworkConfig.cpp"
+			"src/mods/Scene.cpp"
+			"src/mods/ScriptRunner.cpp"
+			"src/mods/VR.cpp"
+			"src/mods/bindings/FS.cpp"
+			"src/mods/bindings/ImGui.cpp"
+			"src/mods/bindings/Json.cpp"
+			"src/mods/bindings/Sdk.cpp"
+			"src/mods/tools/ChainViewer.cpp"
+			"src/mods/tools/GameObjectsDisplay.cpp"
+			"src/mods/tools/ObjectExplorer.cpp"
+			"src/mods/vr/Bindings.cpp"
+			"src/mods/vr/D3D11Component.cpp"
+			"src/mods/vr/D3D12Component.cpp"
+			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/ResourceCopier.cpp"
+			"src/mods/vr/d3d12/TextureContext.cpp"
+			"src/mods/vr/games/RE8VR.cpp"
+			"src/mods/vr/runtimes/OpenVR.cpp"
+			"src/mods/vr/runtimes/OpenXR.cpp"
+			"src/re2-imgui/imgui_impl_dx11.cpp"
+			"src/re2-imgui/imgui_impl_dx12.cpp"
+			"src/re2-imgui/imgui_impl_win32.cpp"
+			"src/utility/ImGui.cpp"
+			"src/D3D11Hook.hpp"
+			"src/D3D12Hook.hpp"
+			"src/DInputHook.hpp"
+			"src/ExceptionHandler.hpp"
+			"src/Genny.hpp"
+			"src/GennyIda.hpp"
+			"src/HookManager.hpp"
+			"src/LicenseStrings.hpp"
+			"src/Mod.hpp"
+			"src/Mods.hpp"
+			"src/REFramework.hpp"
+			"src/Tool.hpp"
+			"src/WindowFilter.hpp"
+			"src/WindowsMessageHook.hpp"
+			"src/mods/APIProxy.hpp"
+			"src/mods/Camera.hpp"
+			"src/mods/DeveloperTools.hpp"
+			"src/mods/FirstPerson.hpp"
+			"src/mods/FreeCam.hpp"
+			"src/mods/Graphics.hpp"
+			"src/mods/Hooks.hpp"
+			"src/mods/IntegrityCheckBypass.hpp"
+			"src/mods/ManualFlashlight.hpp"
+			"src/mods/PluginLoader.hpp"
+			"src/mods/REFrameworkConfig.hpp"
+			"src/mods/Scene.hpp"
+			"src/mods/ScriptRunner.hpp"
+			"src/mods/VR.hpp"
+			"src/mods/bindings/FS.hpp"
+			"src/mods/bindings/ImGui.hpp"
+			"src/mods/bindings/Json.hpp"
+			"src/mods/bindings/Sdk.hpp"
+			"src/mods/tools/ChainViewer.hpp"
+			"src/mods/tools/GameObjectsDisplay.hpp"
+			"src/mods/tools/ObjectExplorer.hpp"
+			"src/mods/vr/D3D11Component.hpp"
+			"src/mods/vr/D3D12Component.hpp"
+			"src/mods/vr/OverlayComponent.hpp"
+			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/ResourceCopier.hpp"
+			"src/mods/vr/d3d12/TextureContext.hpp"
+			"src/mods/vr/games/RE8VR.hpp"
+			"src/mods/vr/runtimes/OpenVR.hpp"
+			"src/mods/vr/runtimes/OpenXR.hpp"
+			"src/mods/vr/runtimes/VRRuntime.hpp"
+			"src/re2-imgui/af_baidu.hpp"
+			"src/re2-imgui/af_faprolight.hpp"
+			"src/re2-imgui/font_robotomedium.hpp"
+			"src/re2-imgui/re2_imconfig.hpp"
+			"src/utility/ImGui.hpp"
+			"src/re2-imgui/af_fadef.h"
+			"src/re2-imgui/imgui_impl_dx11.h"
+			"src/re2-imgui/imgui_impl_dx12.h"
+			"src/re2-imgui/imgui_impl_win32.h"
 		)
+
+		list(APPEND DMC5_SOURCES
+			cmake.toml
+		)
+
+		set(CMKR_SOURCES ${DMC5_SOURCES})
+		add_library(DMC5 SHARED)
+
+		if(DMC5_SOURCES)
+			target_sources(DMC5 PRIVATE ${DMC5_SOURCES})
+		endif()
+
+		target_compile_definitions(DMC5 PUBLIC
+			${CMKR_TARGET}
+			REFRAMEWORK_EXPORTS
+			"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
+		)
+
+		if(DEVELOPER_MODE) # developer-mode
+			target_compile_definitions(DMC5 PUBLIC
+				DEVELOPER
+			)
+		endif()
+
+		target_compile_features(DMC5 PUBLIC
+			cxx_std_20
+		)
+
+		target_compile_options(DMC5 PUBLIC
+			"/GS-"
+			"/bigobj"
+			"/EHa"
+		)
+
+		target_include_directories(DMC5 PUBLIC
+			"shared/"
+			"src/"
+			"include/"
+			"${OPENXR_SOURCE_DIR}/src"
+		)
+
+		target_link_directories(DMC5 PUBLIC
+			"dependencies/openvr/lib/win64/"
+		)
+
+		target_link_libraries(DMC5 PUBLIC
+			${CMKR_TARGET}SDK
+			utility
+			asmjit::asmjit
+			nlohmann_json
+			spdlog
+			lua
+			sol2
+			imgui
+			imguizmo
+			imnodes
+			minhook
+			d3d11
+			glm_static
+			shlwapi
+			openvr
+			openxr_loader
+			delayimp
+			DirectXTK
+			DirectXTK12
+		)
+
+		set_target_properties(DMC5 PROPERTIES
+			OUTPUT_NAME
+				dinput8
+			LINK_FLAGS
+				"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	target_compile_features(DMC5 PUBLIC
-		cxx_std_20
-	)
-
-	target_compile_options(DMC5 PUBLIC
-		"/GS-"
-		"/bigobj"
-		"/EHa"
-	)
-
-	target_include_directories(DMC5 PUBLIC
-		"shared/"
-		"src/"
-		"include/"
-		"${OPENXR_SOURCE_DIR}/src"
-	)
-
-	target_link_directories(DMC5 PUBLIC
-		"dependencies/openvr/lib/win64/"
-	)
-
-	target_link_libraries(DMC5 PUBLIC
-		${CMKR_TARGET}SDK
-		utility
-		asmjit::asmjit
-		nlohmann_json
-		spdlog
-		lua
-		sol2
-		imgui
-		imguizmo
-		imnodes
-		minhook
-		d3d11
-		glm_static
-		shlwapi
-		openvr
-		openxr_loader
-		delayimp
-		DirectXTK
-		DirectXTK12
-	)
-
-	set_target_properties(DMC5 PROPERTIES
-		OUTPUT_NAME
-			dinput8
-		LINK_FLAGS
-			"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target MHRISESDK
-if(REF_BUILD_MHRISE_SDK OR REF_BUILD_FRAMEWORK) # build-mhrise-sdk
+if(REF_BUILD_MHRISE_SDK AND REF_BUILD_FRAMEWORK) # build-mhrise-sdk
 	set(CMKR_TARGET MHRISESDK)
 	set(MHRISESDK_SOURCES "")
 
@@ -8370,313 +8400,319 @@ endif()
 
 # Target MHRISE
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET MHRISE)
-	set(MHRISE_SOURCES "")
+	if(REF_BUILD_MHRISE) # build-mhrise
+		set(CMKR_TARGET MHRISE)
+		set(MHRISE_SOURCES "")
 
-	list(APPEND MHRISE_SOURCES
-		"src/D3D11Hook.cpp"
-		"src/D3D12Hook.cpp"
-		"src/DInputHook.cpp"
-		"src/ExceptionHandler.cpp"
-		"src/HookManager.cpp"
-		"src/Main.cpp"
-		"src/Mods.cpp"
-		"src/REFramework.cpp"
-		"src/WindowsMessageHook.cpp"
-		"src/mods/APIProxy.cpp"
-		"src/mods/Camera.cpp"
-		"src/mods/DeveloperTools.cpp"
-		"src/mods/FirstPerson.cpp"
-		"src/mods/FreeCam.cpp"
-		"src/mods/Graphics.cpp"
-		"src/mods/Hooks.cpp"
-		"src/mods/IntegrityCheckBypass.cpp"
-		"src/mods/ManualFlashlight.cpp"
-		"src/mods/PluginLoader.cpp"
-		"src/mods/REFrameworkConfig.cpp"
-		"src/mods/Scene.cpp"
-		"src/mods/ScriptRunner.cpp"
-		"src/mods/VR.cpp"
-		"src/mods/bindings/FS.cpp"
-		"src/mods/bindings/ImGui.cpp"
-		"src/mods/bindings/Json.cpp"
-		"src/mods/bindings/Sdk.cpp"
-		"src/mods/tools/ChainViewer.cpp"
-		"src/mods/tools/GameObjectsDisplay.cpp"
-		"src/mods/tools/ObjectExplorer.cpp"
-		"src/mods/vr/Bindings.cpp"
-		"src/mods/vr/D3D11Component.cpp"
-		"src/mods/vr/D3D12Component.cpp"
-		"src/mods/vr/OverlayComponent.cpp"
-		"src/mods/vr/d3d12/ResourceCopier.cpp"
-		"src/mods/vr/d3d12/TextureContext.cpp"
-		"src/mods/vr/games/RE8VR.cpp"
-		"src/mods/vr/runtimes/OpenVR.cpp"
-		"src/mods/vr/runtimes/OpenXR.cpp"
-		"src/re2-imgui/imgui_impl_dx11.cpp"
-		"src/re2-imgui/imgui_impl_dx12.cpp"
-		"src/re2-imgui/imgui_impl_win32.cpp"
-		"src/utility/ImGui.cpp"
-		"src/D3D11Hook.hpp"
-		"src/D3D12Hook.hpp"
-		"src/DInputHook.hpp"
-		"src/ExceptionHandler.hpp"
-		"src/Genny.hpp"
-		"src/GennyIda.hpp"
-		"src/HookManager.hpp"
-		"src/LicenseStrings.hpp"
-		"src/Mod.hpp"
-		"src/Mods.hpp"
-		"src/REFramework.hpp"
-		"src/Tool.hpp"
-		"src/WindowFilter.hpp"
-		"src/WindowsMessageHook.hpp"
-		"src/mods/APIProxy.hpp"
-		"src/mods/Camera.hpp"
-		"src/mods/DeveloperTools.hpp"
-		"src/mods/FirstPerson.hpp"
-		"src/mods/FreeCam.hpp"
-		"src/mods/Graphics.hpp"
-		"src/mods/Hooks.hpp"
-		"src/mods/IntegrityCheckBypass.hpp"
-		"src/mods/ManualFlashlight.hpp"
-		"src/mods/PluginLoader.hpp"
-		"src/mods/REFrameworkConfig.hpp"
-		"src/mods/Scene.hpp"
-		"src/mods/ScriptRunner.hpp"
-		"src/mods/VR.hpp"
-		"src/mods/bindings/FS.hpp"
-		"src/mods/bindings/ImGui.hpp"
-		"src/mods/bindings/Json.hpp"
-		"src/mods/bindings/Sdk.hpp"
-		"src/mods/tools/ChainViewer.hpp"
-		"src/mods/tools/GameObjectsDisplay.hpp"
-		"src/mods/tools/ObjectExplorer.hpp"
-		"src/mods/vr/D3D11Component.hpp"
-		"src/mods/vr/D3D12Component.hpp"
-		"src/mods/vr/OverlayComponent.hpp"
-		"src/mods/vr/d3d12/ComPtr.hpp"
-		"src/mods/vr/d3d12/ResourceCopier.hpp"
-		"src/mods/vr/d3d12/TextureContext.hpp"
-		"src/mods/vr/games/RE8VR.hpp"
-		"src/mods/vr/runtimes/OpenVR.hpp"
-		"src/mods/vr/runtimes/OpenXR.hpp"
-		"src/mods/vr/runtimes/VRRuntime.hpp"
-		"src/re2-imgui/af_baidu.hpp"
-		"src/re2-imgui/af_faprolight.hpp"
-		"src/re2-imgui/font_robotomedium.hpp"
-		"src/re2-imgui/re2_imconfig.hpp"
-		"src/utility/ImGui.hpp"
-		"src/re2-imgui/af_fadef.h"
-		"src/re2-imgui/imgui_impl_dx11.h"
-		"src/re2-imgui/imgui_impl_dx12.h"
-		"src/re2-imgui/imgui_impl_win32.h"
-	)
-
-	list(APPEND MHRISE_SOURCES
-		cmake.toml
-	)
-
-	set(CMKR_SOURCES ${MHRISE_SOURCES})
-	add_library(MHRISE SHARED)
-
-	if(MHRISE_SOURCES)
-		target_sources(MHRISE PRIVATE ${MHRISE_SOURCES})
-	endif()
-
-	target_compile_definitions(MHRISE PUBLIC
-		${CMKR_TARGET}
-		REFRAMEWORK_EXPORTS
-		"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
-	)
-
-	if(DEVELOPER_MODE) # developer-mode
-		target_compile_definitions(MHRISE PUBLIC
-			DEVELOPER
+		list(APPEND MHRISE_SOURCES
+			"src/D3D11Hook.cpp"
+			"src/D3D12Hook.cpp"
+			"src/DInputHook.cpp"
+			"src/ExceptionHandler.cpp"
+			"src/HookManager.cpp"
+			"src/Main.cpp"
+			"src/Mods.cpp"
+			"src/REFramework.cpp"
+			"src/WindowsMessageHook.cpp"
+			"src/mods/APIProxy.cpp"
+			"src/mods/Camera.cpp"
+			"src/mods/DeveloperTools.cpp"
+			"src/mods/FirstPerson.cpp"
+			"src/mods/FreeCam.cpp"
+			"src/mods/Graphics.cpp"
+			"src/mods/Hooks.cpp"
+			"src/mods/IntegrityCheckBypass.cpp"
+			"src/mods/ManualFlashlight.cpp"
+			"src/mods/PluginLoader.cpp"
+			"src/mods/REFrameworkConfig.cpp"
+			"src/mods/Scene.cpp"
+			"src/mods/ScriptRunner.cpp"
+			"src/mods/VR.cpp"
+			"src/mods/bindings/FS.cpp"
+			"src/mods/bindings/ImGui.cpp"
+			"src/mods/bindings/Json.cpp"
+			"src/mods/bindings/Sdk.cpp"
+			"src/mods/tools/ChainViewer.cpp"
+			"src/mods/tools/GameObjectsDisplay.cpp"
+			"src/mods/tools/ObjectExplorer.cpp"
+			"src/mods/vr/Bindings.cpp"
+			"src/mods/vr/D3D11Component.cpp"
+			"src/mods/vr/D3D12Component.cpp"
+			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/ResourceCopier.cpp"
+			"src/mods/vr/d3d12/TextureContext.cpp"
+			"src/mods/vr/games/RE8VR.cpp"
+			"src/mods/vr/runtimes/OpenVR.cpp"
+			"src/mods/vr/runtimes/OpenXR.cpp"
+			"src/re2-imgui/imgui_impl_dx11.cpp"
+			"src/re2-imgui/imgui_impl_dx12.cpp"
+			"src/re2-imgui/imgui_impl_win32.cpp"
+			"src/utility/ImGui.cpp"
+			"src/D3D11Hook.hpp"
+			"src/D3D12Hook.hpp"
+			"src/DInputHook.hpp"
+			"src/ExceptionHandler.hpp"
+			"src/Genny.hpp"
+			"src/GennyIda.hpp"
+			"src/HookManager.hpp"
+			"src/LicenseStrings.hpp"
+			"src/Mod.hpp"
+			"src/Mods.hpp"
+			"src/REFramework.hpp"
+			"src/Tool.hpp"
+			"src/WindowFilter.hpp"
+			"src/WindowsMessageHook.hpp"
+			"src/mods/APIProxy.hpp"
+			"src/mods/Camera.hpp"
+			"src/mods/DeveloperTools.hpp"
+			"src/mods/FirstPerson.hpp"
+			"src/mods/FreeCam.hpp"
+			"src/mods/Graphics.hpp"
+			"src/mods/Hooks.hpp"
+			"src/mods/IntegrityCheckBypass.hpp"
+			"src/mods/ManualFlashlight.hpp"
+			"src/mods/PluginLoader.hpp"
+			"src/mods/REFrameworkConfig.hpp"
+			"src/mods/Scene.hpp"
+			"src/mods/ScriptRunner.hpp"
+			"src/mods/VR.hpp"
+			"src/mods/bindings/FS.hpp"
+			"src/mods/bindings/ImGui.hpp"
+			"src/mods/bindings/Json.hpp"
+			"src/mods/bindings/Sdk.hpp"
+			"src/mods/tools/ChainViewer.hpp"
+			"src/mods/tools/GameObjectsDisplay.hpp"
+			"src/mods/tools/ObjectExplorer.hpp"
+			"src/mods/vr/D3D11Component.hpp"
+			"src/mods/vr/D3D12Component.hpp"
+			"src/mods/vr/OverlayComponent.hpp"
+			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/ResourceCopier.hpp"
+			"src/mods/vr/d3d12/TextureContext.hpp"
+			"src/mods/vr/games/RE8VR.hpp"
+			"src/mods/vr/runtimes/OpenVR.hpp"
+			"src/mods/vr/runtimes/OpenXR.hpp"
+			"src/mods/vr/runtimes/VRRuntime.hpp"
+			"src/re2-imgui/af_baidu.hpp"
+			"src/re2-imgui/af_faprolight.hpp"
+			"src/re2-imgui/font_robotomedium.hpp"
+			"src/re2-imgui/re2_imconfig.hpp"
+			"src/utility/ImGui.hpp"
+			"src/re2-imgui/af_fadef.h"
+			"src/re2-imgui/imgui_impl_dx11.h"
+			"src/re2-imgui/imgui_impl_dx12.h"
+			"src/re2-imgui/imgui_impl_win32.h"
 		)
+
+		list(APPEND MHRISE_SOURCES
+			cmake.toml
+		)
+
+		set(CMKR_SOURCES ${MHRISE_SOURCES})
+		add_library(MHRISE SHARED)
+
+		if(MHRISE_SOURCES)
+			target_sources(MHRISE PRIVATE ${MHRISE_SOURCES})
+		endif()
+
+		target_compile_definitions(MHRISE PUBLIC
+			${CMKR_TARGET}
+			REFRAMEWORK_EXPORTS
+			"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
+		)
+
+		if(DEVELOPER_MODE) # developer-mode
+			target_compile_definitions(MHRISE PUBLIC
+				DEVELOPER
+			)
+		endif()
+
+		target_compile_features(MHRISE PUBLIC
+			cxx_std_20
+		)
+
+		target_compile_options(MHRISE PUBLIC
+			"/GS-"
+			"/bigobj"
+			"/EHa"
+		)
+
+		target_include_directories(MHRISE PUBLIC
+			"shared/"
+			"src/"
+			"include/"
+			"${OPENXR_SOURCE_DIR}/src"
+		)
+
+		target_link_directories(MHRISE PUBLIC
+			"dependencies/openvr/lib/win64/"
+		)
+
+		target_link_libraries(MHRISE PUBLIC
+			${CMKR_TARGET}SDK
+			utility
+			asmjit::asmjit
+			nlohmann_json
+			spdlog
+			lua
+			sol2
+			imgui
+			imguizmo
+			imnodes
+			minhook
+			d3d11
+			glm_static
+			shlwapi
+			openvr
+			openxr_loader
+			delayimp
+			DirectXTK
+			DirectXTK12
+		)
+
+		set_target_properties(MHRISE PROPERTIES
+			OUTPUT_NAME
+				dinput8
+			LINK_FLAGS
+				"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	target_compile_features(MHRISE PUBLIC
-		cxx_std_20
-	)
-
-	target_compile_options(MHRISE PUBLIC
-		"/GS-"
-		"/bigobj"
-		"/EHa"
-	)
-
-	target_include_directories(MHRISE PUBLIC
-		"shared/"
-		"src/"
-		"include/"
-		"${OPENXR_SOURCE_DIR}/src"
-	)
-
-	target_link_directories(MHRISE PUBLIC
-		"dependencies/openvr/lib/win64/"
-	)
-
-	target_link_libraries(MHRISE PUBLIC
-		${CMKR_TARGET}SDK
-		utility
-		asmjit::asmjit
-		nlohmann_json
-		spdlog
-		lua
-		sol2
-		imgui
-		imguizmo
-		imnodes
-		minhook
-		d3d11
-		glm_static
-		shlwapi
-		openvr
-		openxr_loader
-		delayimp
-		DirectXTK
-		DirectXTK12
-	)
-
-	set_target_properties(MHRISE PROPERTIES
-		OUTPUT_NAME
-			dinput8
-		LINK_FLAGS
-			"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target example_plugin
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET example_plugin)
-	set(example_plugin_SOURCES "")
+	if(REF_BUILD_EXAMPLE_PLUGIN) # build-example-plugin
+		set(CMKR_TARGET example_plugin)
+		set(example_plugin_SOURCES "")
 
-	list(APPEND example_plugin_SOURCES
-		"examples/example_plugin/Plugin.cpp"
-		"examples/example_plugin/imgui/imgui_impl_dx11.cpp"
-		"examples/example_plugin/imgui/imgui_impl_dx12.cpp"
-		"examples/example_plugin/imgui/imgui_impl_win32.cpp"
-		"examples/example_plugin/rendering/d3d11.cpp"
-		"examples/example_plugin/rendering/d3d12.cpp"
-		"examples/example_plugin/Plugin.hpp"
-		"examples/example_plugin/imgui/font_robotomedium.hpp"
-		"examples/example_plugin/imgui/re2_imconfig.hpp"
-		"examples/example_plugin/rendering/d3d11.hpp"
-		"examples/example_plugin/rendering/d3d12.hpp"
-		"examples/example_plugin/rendering/shared.hpp"
-		"examples/example_plugin/imgui/imgui_impl_dx11.h"
-		"examples/example_plugin/imgui/imgui_impl_dx12.h"
-		"examples/example_plugin/imgui/imgui_impl_win32.h"
-	)
+		list(APPEND example_plugin_SOURCES
+			"examples/example_plugin/Plugin.cpp"
+			"examples/example_plugin/imgui/imgui_impl_dx11.cpp"
+			"examples/example_plugin/imgui/imgui_impl_dx12.cpp"
+			"examples/example_plugin/imgui/imgui_impl_win32.cpp"
+			"examples/example_plugin/rendering/d3d11.cpp"
+			"examples/example_plugin/rendering/d3d12.cpp"
+			"examples/example_plugin/Plugin.hpp"
+			"examples/example_plugin/imgui/font_robotomedium.hpp"
+			"examples/example_plugin/imgui/re2_imconfig.hpp"
+			"examples/example_plugin/rendering/d3d11.hpp"
+			"examples/example_plugin/rendering/d3d12.hpp"
+			"examples/example_plugin/rendering/shared.hpp"
+			"examples/example_plugin/imgui/imgui_impl_dx11.h"
+			"examples/example_plugin/imgui/imgui_impl_dx12.h"
+			"examples/example_plugin/imgui/imgui_impl_win32.h"
+		)
 
-	list(APPEND example_plugin_SOURCES
-		cmake.toml
-	)
+		list(APPEND example_plugin_SOURCES
+			cmake.toml
+		)
 
-	set(CMKR_SOURCES ${example_plugin_SOURCES})
-	add_library(example_plugin SHARED)
+		set(CMKR_SOURCES ${example_plugin_SOURCES})
+		add_library(example_plugin SHARED)
 
-	if(example_plugin_SOURCES)
-		target_sources(example_plugin PRIVATE ${example_plugin_SOURCES})
+		if(example_plugin_SOURCES)
+			target_sources(example_plugin PRIVATE ${example_plugin_SOURCES})
+		endif()
+
+		source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${example_plugin_SOURCES})
+
+		target_compile_features(example_plugin PUBLIC
+			cxx_std_20
+		)
+
+		target_include_directories(example_plugin PUBLIC
+			"include/"
+		)
+
+		target_link_libraries(example_plugin PUBLIC
+			lua
+			sol2
+			imgui
+		)
+
+		set_target_properties(example_plugin PROPERTIES
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${example_plugin_SOURCES})
-
-	target_compile_features(example_plugin PUBLIC
-		cxx_std_20
-	)
-
-	target_include_directories(example_plugin PUBLIC
-		"include/"
-	)
-
-	target_link_libraries(example_plugin PUBLIC
-		lua
-		sol2
-		imgui
-	)
-
-	set_target_properties(example_plugin PROPERTIES
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target weapon_stay_big_plugin
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET weapon_stay_big_plugin)
-	set(weapon_stay_big_plugin_SOURCES "")
+	if(REF_BUILD_WEAPON_STAY_BIG_PLUGIN) # build-weapon-stay-big-plugin
+		set(CMKR_TARGET weapon_stay_big_plugin)
+		set(weapon_stay_big_plugin_SOURCES "")
 
-	list(APPEND weapon_stay_big_plugin_SOURCES
-		"examples/weapon_stay_big_plugin/weapon_stay_big.cpp"
-	)
+		list(APPEND weapon_stay_big_plugin_SOURCES
+			"examples/weapon_stay_big_plugin/weapon_stay_big.cpp"
+		)
 
-	list(APPEND weapon_stay_big_plugin_SOURCES
-		cmake.toml
-	)
+		list(APPEND weapon_stay_big_plugin_SOURCES
+			cmake.toml
+		)
 
-	set(CMKR_SOURCES ${weapon_stay_big_plugin_SOURCES})
-	add_library(weapon_stay_big_plugin SHARED)
+		set(CMKR_SOURCES ${weapon_stay_big_plugin_SOURCES})
+		add_library(weapon_stay_big_plugin SHARED)
 
-	if(weapon_stay_big_plugin_SOURCES)
-		target_sources(weapon_stay_big_plugin PRIVATE ${weapon_stay_big_plugin_SOURCES})
+		if(weapon_stay_big_plugin_SOURCES)
+			target_sources(weapon_stay_big_plugin PRIVATE ${weapon_stay_big_plugin_SOURCES})
+		endif()
+
+		source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${weapon_stay_big_plugin_SOURCES})
+
+		target_compile_features(weapon_stay_big_plugin PUBLIC
+			cxx_std_20
+		)
+
+		target_include_directories(weapon_stay_big_plugin PUBLIC
+			"include/"
+		)
+
+		set_target_properties(weapon_stay_big_plugin PROPERTIES
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${weapon_stay_big_plugin_SOURCES})
-
-	target_compile_features(weapon_stay_big_plugin PUBLIC
-		cxx_std_20
-	)
-
-	target_include_directories(weapon_stay_big_plugin PUBLIC
-		"include/"
-	)
-
-	set_target_properties(weapon_stay_big_plugin PROPERTIES
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
