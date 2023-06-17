@@ -193,6 +193,19 @@ public:
     void on_config_load(const utility::Config& cfg) override;
     void on_config_save(utility::Config& cfg) override;
 
+    void hook_battle_rule();
+    void set_last_battle_type(uint8_t t) {
+        m_last_battle_type = t;
+    }
+    auto get_last_battle_type() {
+        return m_last_battle_type;
+    }
+    void set_last_online_match_state() {
+        m_last_online_match_state = true;
+    }
+    bool is_online_match() {
+        return m_last_online_match_state;
+    }
     void on_frame() override;
     void on_draw_ui() override;
     void on_pre_application_entry(void* entry, const char* name, size_t hash) override;
@@ -216,7 +229,7 @@ public:
             state->lock();
         }
 
-        m_states_locked = true;
+        ++m_lock_depth;
     }
 
     void unlock() {
@@ -224,14 +237,17 @@ public:
             state->unlock();
         }
         m_access_mutex.unlock();
-        m_states_locked = false;
+
+        if (m_lock_depth > 0) {
+            --m_lock_depth;
+        }
     }
 
     lua_State* create_state() {
         std::scoped_lock _{m_access_mutex};
         m_states.emplace_back(std::make_shared<ScriptState>(make_gc_data(), false));
 
-        if (m_states_locked) {
+        for (uint32_t i = 0; i < m_lock_depth; ++i) {
             m_states.back()->lock();
         }
 
@@ -259,7 +275,7 @@ private:
     std::shared_ptr<ScriptState> m_main_state{};
     std::vector<std::shared_ptr<ScriptState>> m_states{};
     std::recursive_mutex m_access_mutex{};
-    std::atomic<bool> m_states_locked{false};
+    std::atomic<uint32_t> m_lock_depth{0};
 
     // A list of Lua files that have been explicitly loaded either through the user manually loading the script, or
     // because the script was in the autorun directory.
@@ -273,6 +289,9 @@ private:
 
     bool m_console_spawned{false};
     bool m_needs_first_reset{true};
+    bool m_last_online_match_state{false};
+    bool m_attempted_hook_battle_rule{false};
+    std::optional<uint8_t> m_last_battle_type{};
     const ModToggle::Ptr m_log_to_disk{ ModToggle::create(generate_name("LogToDisk"), false) };
 
     const ModCombo::Ptr m_gc_handler { 

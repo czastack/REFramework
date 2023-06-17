@@ -42,6 +42,7 @@ REF_BUILD_RE7_TDB49 = false
 REF_BUILD_RE8 = false
 REF_BUILD_DMC5 = false
 REF_BUILD_MHRISE = false
+REF_BUILD_SF6 = false
 REF_BUILD_RE2_SDK = false
 REF_BUILD_RE2_TDB66SDK = false
 REF_BUILD_RE3_SDK = false
@@ -54,6 +55,7 @@ REF_BUILD_DMC5_SDK = false
 REF_BUILD_MHRISE_SDK = false
 REF_BUILD_EXAMPLE_PLUGIN = false
 REF_BUILD_WEAPON_STAY_BIG_PLUGIN = false
+REF_BUILD_SF6_SDK = false
 REF_BUILD_FRAMEWORK = { value = true, comment = "Enable building the full REFramework" }
 REF_BUILD_DEPENDENCIES = { value = true, comment = "Enable building dependencies" }
 
@@ -80,6 +82,8 @@ build-dmc5-sdk = "REF_BUILD_DMC5_SDK AND REF_BUILD_FRAMEWORK"
 build-dmc5 = "REF_BUILD_DMC5"
 build-mhrise-sdk = "REF_BUILD_MHRISE_SDK AND REF_BUILD_FRAMEWORK"
 build-mhrise = "REF_BUILD_MHRISE"
+build-sf6-sdk = "REF_BUILD_SF6_SDK AND REF_BUILD_FRAMEWORK"
+build-sf6 = "REF_BUILD_SF6"
 build-example-plugin = "REF_BUILD_EXAMPLE_PLUGIN"
 build-weapon-stay-big-plugin = "REF_BUILD_WEAPON_STAY_BIG_PLUGIN"
 build-framework-dependencies = "REF_BUILD_DEPENDENCIES AND CMAKE_SIZEOF_VOID_P EQUAL 8"
@@ -351,6 +355,15 @@ condition = "build-mhrise-sdk"
 [target.MHRISE]
 type = "game"
 condition = "build-mhrise"
+
+[target.SF6SDK]
+type = "sdk"
+compile-definitions = ["SF6", "REENGINE_PACKED", "REENGINE_AT"]
+condition = "build-sf6-sdk"
+
+[target.SF6]
+type = "game"
+condition = "build-sf6"
 
 [template.plugin]
 type = "shared"
