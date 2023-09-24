@@ -39,6 +39,7 @@ option(REF_BUILD_RE7_TDB49 OFF)
 option(REF_BUILD_RE8 OFF)
 option(REF_BUILD_DMC5 OFF)
 option(REF_BUILD_MHRISE OFF)
+option(REF_BUILD_SF6 OFF)
 option(REF_BUILD_RE2_SDK OFF)
 option(REF_BUILD_RE2_TDB66SDK OFF)
 option(REF_BUILD_RE3_SDK OFF)
@@ -281,7 +282,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 	source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${imgui_SOURCES})
 
 	target_compile_definitions(imgui PUBLIC
-		"IMGUI_USER_CONFIG=\"${CMAKE_SOURCE_DIR}/src/re2-imgui/re2_imconfig.hpp\""
+		"IMGUI_USER_CONFIG=\"${CMAKE_CURRENT_SOURCE_DIR}/src/re2-imgui/re2_imconfig.hpp\""
 	)
 
 	target_include_directories(imgui PUBLIC
@@ -320,7 +321,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 	source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${imguizmo_SOURCES})
 
 	target_compile_definitions(imguizmo PUBLIC
-		"IMGUI_USER_CONFIG=\"${CMAKE_SOURCE_DIR}/src/re2-imgui/re2_imconfig.hpp\""
+		"IMGUI_USER_CONFIG=\"${CMAKE_CURRENT_SOURCE_DIR}/src/re2-imgui/re2_imconfig.hpp\""
 	)
 
 	target_include_directories(imguizmo PUBLIC
@@ -384,7 +385,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 	)
 
 	target_link_libraries(openvr INTERFACE
-		"${CMAKE_SOURCE_DIR}/dependencies/openvr/lib/win64/openvr_api.lib"
+		"${CMAKE_CURRENT_SOURCE_DIR}/dependencies/openvr/lib/win64/openvr_api.lib"
 	)
 
 	file(COPY dependencies/openvr/lib/win64/openvr_api.lib DESTINATION ${CMAKE_BINARY_DIR}/lib)
@@ -1988,6 +1989,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/Main.cpp"
 			"src/Mods.cpp"
 			"src/REFramework.cpp"
+			"src/WindowFilter.cpp"
 			"src/WindowsMessageHook.cpp"
 			"src/mods/APIProxy.cpp"
 			"src/mods/Camera.cpp"
@@ -2014,6 +2016,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D11Component.cpp"
 			"src/mods/vr/D3D12Component.cpp"
 			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/CommandContext.cpp"
 			"src/mods/vr/d3d12/ResourceCopier.cpp"
 			"src/mods/vr/d3d12/TextureContext.cpp"
 			"src/mods/vr/games/RE8VR.cpp"
@@ -2062,6 +2065,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D12Component.hpp"
 			"src/mods/vr/OverlayComponent.hpp"
 			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/CommandContext.hpp"
 			"src/mods/vr/d3d12/ResourceCopier.hpp"
 			"src/mods/vr/d3d12/TextureContext.hpp"
 			"src/mods/vr/games/RE8VR.hpp"
@@ -2184,6 +2188,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/Main.cpp"
 			"src/Mods.cpp"
 			"src/REFramework.cpp"
+			"src/WindowFilter.cpp"
 			"src/WindowsMessageHook.cpp"
 			"src/mods/APIProxy.cpp"
 			"src/mods/Camera.cpp"
@@ -2210,6 +2215,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D11Component.cpp"
 			"src/mods/vr/D3D12Component.cpp"
 			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/CommandContext.cpp"
 			"src/mods/vr/d3d12/ResourceCopier.cpp"
 			"src/mods/vr/d3d12/TextureContext.cpp"
 			"src/mods/vr/games/RE8VR.cpp"
@@ -2258,6 +2264,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D12Component.hpp"
 			"src/mods/vr/OverlayComponent.hpp"
 			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/CommandContext.hpp"
 			"src/mods/vr/d3d12/ResourceCopier.hpp"
 			"src/mods/vr/d3d12/TextureContext.hpp"
 			"src/mods/vr/games/RE8VR.hpp"
@@ -3817,6 +3824,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/Main.cpp"
 			"src/Mods.cpp"
 			"src/REFramework.cpp"
+			"src/WindowFilter.cpp"
 			"src/WindowsMessageHook.cpp"
 			"src/mods/APIProxy.cpp"
 			"src/mods/Camera.cpp"
@@ -3843,6 +3851,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D11Component.cpp"
 			"src/mods/vr/D3D12Component.cpp"
 			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/CommandContext.cpp"
 			"src/mods/vr/d3d12/ResourceCopier.cpp"
 			"src/mods/vr/d3d12/TextureContext.cpp"
 			"src/mods/vr/games/RE8VR.cpp"
@@ -3891,6 +3900,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D12Component.hpp"
 			"src/mods/vr/OverlayComponent.hpp"
 			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/CommandContext.hpp"
 			"src/mods/vr/d3d12/ResourceCopier.hpp"
 			"src/mods/vr/d3d12/TextureContext.hpp"
 			"src/mods/vr/games/RE8VR.hpp"
@@ -4013,6 +4023,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/Main.cpp"
 			"src/Mods.cpp"
 			"src/REFramework.cpp"
+			"src/WindowFilter.cpp"
 			"src/WindowsMessageHook.cpp"
 			"src/mods/APIProxy.cpp"
 			"src/mods/Camera.cpp"
@@ -4039,6 +4050,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D11Component.cpp"
 			"src/mods/vr/D3D12Component.cpp"
 			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/CommandContext.cpp"
 			"src/mods/vr/d3d12/ResourceCopier.cpp"
 			"src/mods/vr/d3d12/TextureContext.cpp"
 			"src/mods/vr/games/RE8VR.cpp"
@@ -4087,6 +4099,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D12Component.hpp"
 			"src/mods/vr/OverlayComponent.hpp"
 			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/CommandContext.hpp"
 			"src/mods/vr/d3d12/ResourceCopier.hpp"
 			"src/mods/vr/d3d12/TextureContext.hpp"
 			"src/mods/vr/games/RE8VR.hpp"
@@ -4209,6 +4222,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/Main.cpp"
 			"src/Mods.cpp"
 			"src/REFramework.cpp"
+			"src/WindowFilter.cpp"
 			"src/WindowsMessageHook.cpp"
 			"src/mods/APIProxy.cpp"
 			"src/mods/Camera.cpp"
@@ -4235,6 +4249,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D11Component.cpp"
 			"src/mods/vr/D3D12Component.cpp"
 			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/CommandContext.cpp"
 			"src/mods/vr/d3d12/ResourceCopier.cpp"
 			"src/mods/vr/d3d12/TextureContext.cpp"
 			"src/mods/vr/games/RE8VR.cpp"
@@ -4283,6 +4298,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D12Component.hpp"
 			"src/mods/vr/OverlayComponent.hpp"
 			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/CommandContext.hpp"
 			"src/mods/vr/d3d12/ResourceCopier.hpp"
 			"src/mods/vr/d3d12/TextureContext.hpp"
 			"src/mods/vr/games/RE8VR.hpp"
@@ -6562,6 +6578,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/Main.cpp"
 			"src/Mods.cpp"
 			"src/REFramework.cpp"
+			"src/WindowFilter.cpp"
 			"src/WindowsMessageHook.cpp"
 			"src/mods/APIProxy.cpp"
 			"src/mods/Camera.cpp"
@@ -6588,6 +6605,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D11Component.cpp"
 			"src/mods/vr/D3D12Component.cpp"
 			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/CommandContext.cpp"
 			"src/mods/vr/d3d12/ResourceCopier.cpp"
 			"src/mods/vr/d3d12/TextureContext.cpp"
 			"src/mods/vr/games/RE8VR.cpp"
@@ -6636,6 +6654,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D12Component.hpp"
 			"src/mods/vr/OverlayComponent.hpp"
 			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/CommandContext.hpp"
 			"src/mods/vr/d3d12/ResourceCopier.hpp"
 			"src/mods/vr/d3d12/TextureContext.hpp"
 			"src/mods/vr/games/RE8VR.hpp"
@@ -6758,6 +6777,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/Main.cpp"
 			"src/Mods.cpp"
 			"src/REFramework.cpp"
+			"src/WindowFilter.cpp"
 			"src/WindowsMessageHook.cpp"
 			"src/mods/APIProxy.cpp"
 			"src/mods/Camera.cpp"
@@ -6784,6 +6804,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D11Component.cpp"
 			"src/mods/vr/D3D12Component.cpp"
 			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/CommandContext.cpp"
 			"src/mods/vr/d3d12/ResourceCopier.cpp"
 			"src/mods/vr/d3d12/TextureContext.cpp"
 			"src/mods/vr/games/RE8VR.cpp"
@@ -6832,6 +6853,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D12Component.hpp"
 			"src/mods/vr/OverlayComponent.hpp"
 			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/CommandContext.hpp"
 			"src/mods/vr/d3d12/ResourceCopier.hpp"
 			"src/mods/vr/d3d12/TextureContext.hpp"
 			"src/mods/vr/games/RE8VR.hpp"
@@ -7674,6 +7696,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/Main.cpp"
 			"src/Mods.cpp"
 			"src/REFramework.cpp"
+			"src/WindowFilter.cpp"
 			"src/WindowsMessageHook.cpp"
 			"src/mods/APIProxy.cpp"
 			"src/mods/Camera.cpp"
@@ -7700,6 +7723,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D11Component.cpp"
 			"src/mods/vr/D3D12Component.cpp"
 			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/CommandContext.cpp"
 			"src/mods/vr/d3d12/ResourceCopier.cpp"
 			"src/mods/vr/d3d12/TextureContext.cpp"
 			"src/mods/vr/games/RE8VR.cpp"
@@ -7748,6 +7772,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D12Component.hpp"
 			"src/mods/vr/OverlayComponent.hpp"
 			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/CommandContext.hpp"
 			"src/mods/vr/d3d12/ResourceCopier.hpp"
 			"src/mods/vr/d3d12/TextureContext.hpp"
 			"src/mods/vr/games/RE8VR.hpp"
@@ -8588,6 +8613,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/Main.cpp"
 			"src/Mods.cpp"
 			"src/REFramework.cpp"
+			"src/WindowFilter.cpp"
 			"src/WindowsMessageHook.cpp"
 			"src/mods/APIProxy.cpp"
 			"src/mods/Camera.cpp"
@@ -8614,6 +8640,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D11Component.cpp"
 			"src/mods/vr/D3D12Component.cpp"
 			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/CommandContext.cpp"
 			"src/mods/vr/d3d12/ResourceCopier.cpp"
 			"src/mods/vr/d3d12/TextureContext.cpp"
 			"src/mods/vr/games/RE8VR.cpp"
@@ -8662,6 +8689,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D12Component.hpp"
 			"src/mods/vr/OverlayComponent.hpp"
 			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/CommandContext.hpp"
 			"src/mods/vr/d3d12/ResourceCopier.hpp"
 			"src/mods/vr/d3d12/TextureContext.hpp"
 			"src/mods/vr/games/RE8VR.hpp"
@@ -9504,6 +9532,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/Main.cpp"
 			"src/Mods.cpp"
 			"src/REFramework.cpp"
+			"src/WindowFilter.cpp"
 			"src/WindowsMessageHook.cpp"
 			"src/mods/APIProxy.cpp"
 			"src/mods/Camera.cpp"
@@ -9530,6 +9559,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D11Component.cpp"
 			"src/mods/vr/D3D12Component.cpp"
 			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/CommandContext.cpp"
 			"src/mods/vr/d3d12/ResourceCopier.cpp"
 			"src/mods/vr/d3d12/TextureContext.cpp"
 			"src/mods/vr/games/RE8VR.cpp"
@@ -9578,6 +9608,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 			"src/mods/vr/D3D12Component.hpp"
 			"src/mods/vr/OverlayComponent.hpp"
 			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/CommandContext.hpp"
 			"src/mods/vr/d3d12/ResourceCopier.hpp"
 			"src/mods/vr/d3d12/TextureContext.hpp"
 			"src/mods/vr/games/RE8VR.hpp"
@@ -9686,7 +9717,7 @@ if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
 endif()
 
 # Target SF6SDK
-if(REF_BUILD_SF6_SDK OR REF_BUILD_FRAMEWORK) # build-sf6-sdk
+if(REF_BUILD_SF6_SDK AND REF_BUILD_FRAMEWORK) # build-sf6-sdk
 	set(CMKR_TARGET SF6SDK)
 	set(SF6SDK_SOURCES "")
 
@@ -10407,196 +10438,201 @@ endif()
 
 # Target SF6
 if(REF_BUILD_FRAMEWORK AND CMAKE_SIZEOF_VOID_P EQUAL 8) # build-framework
-	set(CMKR_TARGET SF6)
-	set(SF6_SOURCES "")
+	if(REF_BUILD_SF6) # build-sf6
+		set(CMKR_TARGET SF6)
+		set(SF6_SOURCES "")
 
-	list(APPEND SF6_SOURCES
-		"src/D3D11Hook.cpp"
-		"src/D3D12Hook.cpp"
-		"src/DInputHook.cpp"
-		"src/ExceptionHandler.cpp"
-		"src/HookManager.cpp"
-		"src/Main.cpp"
-		"src/Mods.cpp"
-		"src/REFramework.cpp"
-		"src/WindowsMessageHook.cpp"
-		"src/mods/APIProxy.cpp"
-		"src/mods/Camera.cpp"
-		"src/mods/DeveloperTools.cpp"
-		"src/mods/FirstPerson.cpp"
-		"src/mods/FreeCam.cpp"
-		"src/mods/Graphics.cpp"
-		"src/mods/Hooks.cpp"
-		"src/mods/IntegrityCheckBypass.cpp"
-		"src/mods/ManualFlashlight.cpp"
-		"src/mods/PluginLoader.cpp"
-		"src/mods/REFrameworkConfig.cpp"
-		"src/mods/Scene.cpp"
-		"src/mods/ScriptRunner.cpp"
-		"src/mods/VR.cpp"
-		"src/mods/bindings/FS.cpp"
-		"src/mods/bindings/ImGui.cpp"
-		"src/mods/bindings/Json.cpp"
-		"src/mods/bindings/Sdk.cpp"
-		"src/mods/tools/ChainViewer.cpp"
-		"src/mods/tools/GameObjectsDisplay.cpp"
-		"src/mods/tools/ObjectExplorer.cpp"
-		"src/mods/vr/Bindings.cpp"
-		"src/mods/vr/D3D11Component.cpp"
-		"src/mods/vr/D3D12Component.cpp"
-		"src/mods/vr/OverlayComponent.cpp"
-		"src/mods/vr/d3d12/ResourceCopier.cpp"
-		"src/mods/vr/d3d12/TextureContext.cpp"
-		"src/mods/vr/games/RE8VR.cpp"
-		"src/mods/vr/runtimes/OpenVR.cpp"
-		"src/mods/vr/runtimes/OpenXR.cpp"
-		"src/re2-imgui/imgui_impl_dx11.cpp"
-		"src/re2-imgui/imgui_impl_dx12.cpp"
-		"src/re2-imgui/imgui_impl_win32.cpp"
-		"src/utility/ImGui.cpp"
-		"src/D3D11Hook.hpp"
-		"src/D3D12Hook.hpp"
-		"src/DInputHook.hpp"
-		"src/ExceptionHandler.hpp"
-		"src/Genny.hpp"
-		"src/GennyIda.hpp"
-		"src/HookManager.hpp"
-		"src/LicenseStrings.hpp"
-		"src/Mod.hpp"
-		"src/Mods.hpp"
-		"src/REFramework.hpp"
-		"src/Tool.hpp"
-		"src/WindowFilter.hpp"
-		"src/WindowsMessageHook.hpp"
-		"src/mods/APIProxy.hpp"
-		"src/mods/Camera.hpp"
-		"src/mods/DeveloperTools.hpp"
-		"src/mods/FirstPerson.hpp"
-		"src/mods/FreeCam.hpp"
-		"src/mods/Graphics.hpp"
-		"src/mods/Hooks.hpp"
-		"src/mods/IntegrityCheckBypass.hpp"
-		"src/mods/ManualFlashlight.hpp"
-		"src/mods/PluginLoader.hpp"
-		"src/mods/REFrameworkConfig.hpp"
-		"src/mods/Scene.hpp"
-		"src/mods/ScriptRunner.hpp"
-		"src/mods/VR.hpp"
-		"src/mods/bindings/FS.hpp"
-		"src/mods/bindings/ImGui.hpp"
-		"src/mods/bindings/Json.hpp"
-		"src/mods/bindings/Sdk.hpp"
-		"src/mods/tools/ChainViewer.hpp"
-		"src/mods/tools/GameObjectsDisplay.hpp"
-		"src/mods/tools/ObjectExplorer.hpp"
-		"src/mods/vr/D3D11Component.hpp"
-		"src/mods/vr/D3D12Component.hpp"
-		"src/mods/vr/OverlayComponent.hpp"
-		"src/mods/vr/d3d12/ComPtr.hpp"
-		"src/mods/vr/d3d12/ResourceCopier.hpp"
-		"src/mods/vr/d3d12/TextureContext.hpp"
-		"src/mods/vr/games/RE8VR.hpp"
-		"src/mods/vr/runtimes/OpenVR.hpp"
-		"src/mods/vr/runtimes/OpenXR.hpp"
-		"src/mods/vr/runtimes/VRRuntime.hpp"
-		"src/re2-imgui/af_baidu.hpp"
-		"src/re2-imgui/af_faprolight.hpp"
-		"src/re2-imgui/font_robotomedium.hpp"
-		"src/re2-imgui/re2_imconfig.hpp"
-		"src/utility/ImGui.hpp"
-		"src/re2-imgui/af_fadef.h"
-		"src/re2-imgui/imgui_impl_dx11.h"
-		"src/re2-imgui/imgui_impl_dx12.h"
-		"src/re2-imgui/imgui_impl_win32.h"
-	)
-
-	list(APPEND SF6_SOURCES
-		cmake.toml
-	)
-
-	set(CMKR_SOURCES ${SF6_SOURCES})
-	add_library(SF6 SHARED)
-
-	if(SF6_SOURCES)
-		target_sources(SF6 PRIVATE ${SF6_SOURCES})
-	endif()
-
-	target_compile_definitions(SF6 PUBLIC
-		${CMKR_TARGET}
-		REFRAMEWORK_EXPORTS
-		"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
-	)
-
-	if(DEVELOPER_MODE) # developer-mode
-		target_compile_definitions(SF6 PUBLIC
-			DEVELOPER
+		list(APPEND SF6_SOURCES
+			"src/D3D11Hook.cpp"
+			"src/D3D12Hook.cpp"
+			"src/DInputHook.cpp"
+			"src/ExceptionHandler.cpp"
+			"src/HookManager.cpp"
+			"src/Main.cpp"
+			"src/Mods.cpp"
+			"src/REFramework.cpp"
+			"src/WindowFilter.cpp"
+			"src/WindowsMessageHook.cpp"
+			"src/mods/APIProxy.cpp"
+			"src/mods/Camera.cpp"
+			"src/mods/DeveloperTools.cpp"
+			"src/mods/FirstPerson.cpp"
+			"src/mods/FreeCam.cpp"
+			"src/mods/Graphics.cpp"
+			"src/mods/Hooks.cpp"
+			"src/mods/IntegrityCheckBypass.cpp"
+			"src/mods/ManualFlashlight.cpp"
+			"src/mods/PluginLoader.cpp"
+			"src/mods/REFrameworkConfig.cpp"
+			"src/mods/Scene.cpp"
+			"src/mods/ScriptRunner.cpp"
+			"src/mods/VR.cpp"
+			"src/mods/bindings/FS.cpp"
+			"src/mods/bindings/ImGui.cpp"
+			"src/mods/bindings/Json.cpp"
+			"src/mods/bindings/Sdk.cpp"
+			"src/mods/tools/ChainViewer.cpp"
+			"src/mods/tools/GameObjectsDisplay.cpp"
+			"src/mods/tools/ObjectExplorer.cpp"
+			"src/mods/vr/Bindings.cpp"
+			"src/mods/vr/D3D11Component.cpp"
+			"src/mods/vr/D3D12Component.cpp"
+			"src/mods/vr/OverlayComponent.cpp"
+			"src/mods/vr/d3d12/CommandContext.cpp"
+			"src/mods/vr/d3d12/ResourceCopier.cpp"
+			"src/mods/vr/d3d12/TextureContext.cpp"
+			"src/mods/vr/games/RE8VR.cpp"
+			"src/mods/vr/runtimes/OpenVR.cpp"
+			"src/mods/vr/runtimes/OpenXR.cpp"
+			"src/re2-imgui/imgui_impl_dx11.cpp"
+			"src/re2-imgui/imgui_impl_dx12.cpp"
+			"src/re2-imgui/imgui_impl_win32.cpp"
+			"src/utility/ImGui.cpp"
+			"src/D3D11Hook.hpp"
+			"src/D3D12Hook.hpp"
+			"src/DInputHook.hpp"
+			"src/ExceptionHandler.hpp"
+			"src/Genny.hpp"
+			"src/GennyIda.hpp"
+			"src/HookManager.hpp"
+			"src/LicenseStrings.hpp"
+			"src/Mod.hpp"
+			"src/Mods.hpp"
+			"src/REFramework.hpp"
+			"src/Tool.hpp"
+			"src/WindowFilter.hpp"
+			"src/WindowsMessageHook.hpp"
+			"src/mods/APIProxy.hpp"
+			"src/mods/Camera.hpp"
+			"src/mods/DeveloperTools.hpp"
+			"src/mods/FirstPerson.hpp"
+			"src/mods/FreeCam.hpp"
+			"src/mods/Graphics.hpp"
+			"src/mods/Hooks.hpp"
+			"src/mods/IntegrityCheckBypass.hpp"
+			"src/mods/ManualFlashlight.hpp"
+			"src/mods/PluginLoader.hpp"
+			"src/mods/REFrameworkConfig.hpp"
+			"src/mods/Scene.hpp"
+			"src/mods/ScriptRunner.hpp"
+			"src/mods/VR.hpp"
+			"src/mods/bindings/FS.hpp"
+			"src/mods/bindings/ImGui.hpp"
+			"src/mods/bindings/Json.hpp"
+			"src/mods/bindings/Sdk.hpp"
+			"src/mods/tools/ChainViewer.hpp"
+			"src/mods/tools/GameObjectsDisplay.hpp"
+			"src/mods/tools/ObjectExplorer.hpp"
+			"src/mods/vr/D3D11Component.hpp"
+			"src/mods/vr/D3D12Component.hpp"
+			"src/mods/vr/OverlayComponent.hpp"
+			"src/mods/vr/d3d12/ComPtr.hpp"
+			"src/mods/vr/d3d12/CommandContext.hpp"
+			"src/mods/vr/d3d12/ResourceCopier.hpp"
+			"src/mods/vr/d3d12/TextureContext.hpp"
+			"src/mods/vr/games/RE8VR.hpp"
+			"src/mods/vr/runtimes/OpenVR.hpp"
+			"src/mods/vr/runtimes/OpenXR.hpp"
+			"src/mods/vr/runtimes/VRRuntime.hpp"
+			"src/re2-imgui/af_baidu.hpp"
+			"src/re2-imgui/af_faprolight.hpp"
+			"src/re2-imgui/font_robotomedium.hpp"
+			"src/re2-imgui/re2_imconfig.hpp"
+			"src/utility/ImGui.hpp"
+			"src/re2-imgui/af_fadef.h"
+			"src/re2-imgui/imgui_impl_dx11.h"
+			"src/re2-imgui/imgui_impl_dx12.h"
+			"src/re2-imgui/imgui_impl_win32.h"
 		)
+
+		list(APPEND SF6_SOURCES
+			cmake.toml
+		)
+
+		set(CMKR_SOURCES ${SF6_SOURCES})
+		add_library(SF6 SHARED)
+
+		if(SF6_SOURCES)
+			target_sources(SF6 PRIVATE ${SF6_SOURCES})
+		endif()
+
+		target_compile_definitions(SF6 PUBLIC
+			${CMKR_TARGET}
+			REFRAMEWORK_EXPORTS
+			"REFRAMEWORK_GAME_NAME=\"${CMKR_TARGET}\""
+		)
+
+		if(DEVELOPER_MODE) # developer-mode
+			target_compile_definitions(SF6 PUBLIC
+				DEVELOPER
+			)
+		endif()
+
+		target_compile_features(SF6 PUBLIC
+			cxx_std_20
+		)
+
+		target_compile_options(SF6 PUBLIC
+			"/GS-"
+			"/bigobj"
+			"/EHa"
+		)
+
+		target_include_directories(SF6 PUBLIC
+			"shared/"
+			"src/"
+			"include/"
+			"${OPENXR_SOURCE_DIR}/src"
+		)
+
+		target_link_directories(SF6 PUBLIC
+			"dependencies/openvr/lib/win64/"
+		)
+
+		target_link_libraries(SF6 PUBLIC
+			${CMKR_TARGET}SDK
+			utility
+			asmjit::asmjit
+			nlohmann_json
+			spdlog
+			lua
+			sol2
+			imgui
+			imguizmo
+			imnodes
+			minhook
+			d3d11
+			glm_static
+			shlwapi
+			openvr
+			openxr_loader
+			delayimp
+			DirectXTK
+			DirectXTK12
+		)
+
+		set_target_properties(SF6 PROPERTIES
+			OUTPUT_NAME
+				dinput8
+			LINK_FLAGS
+				"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELEASE
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+			ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
+				"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
+		)
+
+		unset(CMKR_TARGET)
+		unset(CMKR_SOURCES)
 	endif()
-
-	target_compile_features(SF6 PUBLIC
-		cxx_std_20
-	)
-
-	target_compile_options(SF6 PUBLIC
-		"/GS-"
-		"/bigobj"
-		"/EHa"
-	)
-
-	target_include_directories(SF6 PUBLIC
-		"shared/"
-		"src/"
-		"include/"
-		"${OPENXR_SOURCE_DIR}/src"
-	)
-
-	target_link_directories(SF6 PUBLIC
-		"dependencies/openvr/lib/win64/"
-	)
-
-	target_link_libraries(SF6 PUBLIC
-		${CMKR_TARGET}SDK
-		utility
-		asmjit::asmjit
-		nlohmann_json
-		spdlog
-		lua
-		sol2
-		imgui
-		imguizmo
-		imnodes
-		minhook
-		d3d11
-		glm_static
-		shlwapi
-		openvr
-		openxr_loader
-		delayimp
-		DirectXTK
-		DirectXTK12
-	)
-
-	set_target_properties(SF6 PROPERTIES
-		OUTPUT_NAME
-			dinput8
-		LINK_FLAGS
-			"/DELAYLOAD:openvr_api.dll /DELAYLOAD:openxr_loader.dll"
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/bin/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-		ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO
-			"${CMAKE_BINARY_DIR}/lib/${CMKR_TARGET}"
-	)
-
-	unset(CMKR_TARGET)
-	unset(CMKR_SOURCES)
 endif()
 
 # Target example_plugin
